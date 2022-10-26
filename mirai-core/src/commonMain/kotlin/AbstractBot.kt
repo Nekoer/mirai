@@ -111,6 +111,10 @@ internal abstract class AbstractBot constructor(
     override fun close(cause: Throwable?) {
         if (!this.isActive) return
 
+        if (networkInitialized) {
+            network.close(cause)
+        }
+
         if (cause == null) {
             supervisorJob.cancel()
         } else {

@@ -204,7 +204,7 @@ if (tasks.findByName("androidMainClasses") != null) {
 
 configureMppPublishing()
 configureBinaryValidators(setOf("jvm", "android").filterTargets())
-configureRelocationForCore()
+relocateKtorForCore(false)
 
 //mavenCentralPublish {
 //    artifactId = "mirai-core"

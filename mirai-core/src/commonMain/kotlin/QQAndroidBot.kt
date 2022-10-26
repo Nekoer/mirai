@@ -77,8 +77,10 @@ internal open class QQAndroidBot constructor(
     override val friendGroups: FriendGroupsImpl by lazy { FriendGroupsImpl(this) }
     val client get() = components[SsoProcessor].client
 
+    private val closing = atomic(false)
     override fun close(cause: Throwable?) {
         if (!this.isActive) return
+        if (!closing.compareAndSet(false, true)) return
 
         if (networkInitialized) {
             runBlocking {
