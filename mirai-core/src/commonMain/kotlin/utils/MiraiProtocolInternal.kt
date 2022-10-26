@@ -35,12 +35,12 @@ internal class MiraiProtocolInternal(
         init {
             protocols[MiraiProtocol.ANDROID_PHONE] = MiraiProtocolInternal(
                 "com.tencent.mobileqq",
-                537113159,
-                "8.8.80.7400",
+                537138832,
+                "8.9.15.9425",
                 "6.0.0.2494",
-                184024956,
+                150470524,
                 66560,
-                34869472,
+                16724722,
                 "A6 B7 45 BF 24 A2 C2 77 52 77 16 F6 F3 6E B6 8D",
                 1640921786L,
                 16,

@@ -55,11 +55,13 @@ internal interface ContactUpdater {
     val friendListLock: Mutex
     val friendGroupsLock: Mutex
     val strangerListLock: Mutex
+    val guildListLock: Mutex
 
     suspend fun reloadFriendList(registerResp: SvcRespRegister)
     suspend fun reloadFriendGroupList()
     suspend fun reloadGroupList()
     suspend fun reloadStrangerList()
+    suspend fun reloadGuildList()
 
     /**
      * Closes all contacts and save them to cache if needed.
@@ -81,6 +83,7 @@ internal class ContactUpdaterImpl(
     override val friendListLock: Mutex = Mutex()
     override val friendGroupsLock: Mutex = Mutex()
     override val strangerListLock: Mutex = Mutex()
+    override val guildListLock: Mutex = Mutex()
     private val cacheService get() = components[ContactCacheService]
 
     override fun closeAllContacts(e: CancellationException) {
@@ -322,7 +325,7 @@ internal class ContactUpdaterImpl(
         initGroupOk = true
     }
 
-    private suspend fun reloadGuildList() {
+    override suspend fun reloadGuildList() = guildListLock.withLock {
         if (initGuildOk) {
             return
         }

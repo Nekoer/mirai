@@ -103,6 +103,7 @@ internal class BotInitProcessorImpl(
                 launch { runWithCoverage("loading groups") { context[ContactUpdater].reloadGroupList() } }
                 launch { runWithCoverage("loading otherClients") { context[ContactUpdater].reloadStrangerList() } }
                 launch { runWithCoverage("loading friendGroups") { context[ContactUpdater].reloadFriendGroupList() } }
+                launch { runWithCoverage("loading guilds") { context[ContactUpdater].reloadGuildList() } }
             }
 
             state.value = INITIALIZED

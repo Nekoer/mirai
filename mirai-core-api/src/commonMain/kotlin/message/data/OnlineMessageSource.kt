@@ -143,6 +143,32 @@ public sealed class OnlineMessageSource : MessageSource() {
                 return "[mirai:source:ids=${ids.contentToString()}, internalIds=${internalIds.contentToString()}, from $fromId to group $targetId at $time]"
             }
         }
+
+        @NotStableForInheritance
+        public abstract class ToChannel @MiraiInternalApi constructor() : Outgoing() {
+            public companion object Key :
+                AbstractPolymorphicMessageKey<Outgoing, ToChannel>(Outgoing, { it.safeCast() })
+
+            public abstract override val target: Channel
+            public final override val subject: Channel get() = target
+
+            final override fun toString(): String {
+                return "[mirai:source:ids=${ids.contentToString()}, internalIds=${internalIds.contentToString()}, from $fromId to channel $targetId at $time]"
+            }
+        }
+
+        @NotStableForInheritance
+        public abstract class ToDirect @MiraiInternalApi constructor() : Outgoing() {
+            public companion object Key :
+                AbstractPolymorphicMessageKey<Outgoing, ToDirect>(Outgoing, { it.safeCast() })
+
+            public abstract override val target: GuildMember
+            public final override val subject: GuildMember get() = target
+
+            final override fun toString(): String {
+                return "[mirai:source:ids=${ids.contentToString()}, internalIds=${internalIds.contentToString()}, from $fromId to direct $targetId at $time]"
+            }
+        }
     }
 
     /**
@@ -211,7 +237,38 @@ public sealed class OnlineMessageSource : MessageSource() {
             }
         }
 
+        @NotStableForInheritance
+        public abstract class FromGuild @MiraiInternalApi constructor() : Incoming() {
+            public companion object Key :
+                AbstractPolymorphicMessageKey<Incoming, FromGuild>(Incoming, { it.safeCast() })
+
+            public abstract override val sender: GuildMember
+            public override val subject: Guild get() = sender.guild
+            public final override val target: Guild get() = subject
+            public inline val guild: Guild get() = subject
+
+            final override fun toString(): String {
+                return "[mirai:source:ids=${ids.contentToString()}, internalIds=${internalIds.contentToString()}, from guild $fromId to $targetId at $time]"
+            }
+        }
+
+        @NotStableForInheritance
+        public abstract class FromDirect @MiraiInternalApi constructor() : Incoming() {
+            public companion object Key :
+                AbstractPolymorphicMessageKey<Incoming, FromDirect>(Incoming, { it.safeCast() })
+
+            public abstract override val sender: GuildMember
+            public override val subject: GuildMember get() = sender
+            public final override val target: GuildMember get() = subject
+
+            final override fun toString(): String {
+                return "[mirai:source:ids=${ids.contentToString()}, internalIds=${internalIds.contentToString()}, from direct $fromId to $targetId at $time]"
+            }
+        }
+
         public companion object Key :
             AbstractPolymorphicMessageKey<OnlineMessageSource, FromTemp>(OnlineMessageSource, { it.safeCast() })
     }
+
+
 }
