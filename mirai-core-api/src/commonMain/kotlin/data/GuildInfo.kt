@@ -75,5 +75,5 @@ public interface GuildInfo {
     /**
      * 频道所有者
      */
-    public val ownerId: Long
+    public val ownerTinyId: Long
 }

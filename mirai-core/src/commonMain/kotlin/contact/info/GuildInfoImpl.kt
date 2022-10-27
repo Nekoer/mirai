@@ -26,7 +26,7 @@ internal data class GuildInfoImpl(
     override val createTime: Long,
     override val maxRobotCount: Short,
     override val maxAdminCount: Short,
-    override val ownerId: Long
+    override val ownerTinyId: Long
 ) : GuildInfo, Packet, Packet.NoLog {
 
 }
