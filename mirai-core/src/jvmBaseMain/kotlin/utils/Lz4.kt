@@ -9,6 +9,7 @@
 
 package net.mamoe.mirai.internal.utils
 
+import net.mamoe.mirai.utils.MiraiLogger
 import org.apache.commons.compress.compressors.lz4.BlockLZ4CompressorInputStream
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
@@ -18,6 +19,11 @@ import java.io.IOException
 
 internal actual class Lz4 {
     actual companion object {
+
+        private val logger by lazy {
+            MiraiLogger.Factory.create(Lz4::class)
+        }
+
         actual fun decode(data: ByteArray): ByteArray? {
             var decompressed: ByteArray? = null
             val byteOutputStream = ByteArrayOutputStream()
@@ -25,7 +31,7 @@ internal actual class Lz4 {
             try {
                 val byteInputStream = ByteArrayInputStream(data, 0, data.size)
                 val `in` = BufferedInputStream(byteInputStream)
-                val lz4InputStream: BlockLZ4CompressorInputStream =
+                val lz4InputStream =
                     BlockLZ4CompressorInputStream(
                         `in`
                     )

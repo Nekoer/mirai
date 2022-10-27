@@ -53,6 +53,6 @@ private val myStubFailure = Exception()
 
 private class RunCoroutineInPlace
 
-public val logger: MiraiLogger by lazy {
+private val logger by lazy {
     MiraiLogger.Factory.create(RunCoroutineInPlace::class)
 }
