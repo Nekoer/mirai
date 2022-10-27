@@ -16,7 +16,7 @@ import net.mamoe.mirai.event.events.DirectMessageEvent
 import net.mamoe.mirai.event.events.DirectMessageSyncEvent
 import net.mamoe.mirai.internal.contact.GuildImpl
 import net.mamoe.mirai.internal.contact.appId
-import net.mamoe.mirai.internal.message.toGuildMessageChainOnline
+import net.mamoe.mirai.internal.message.toMessageChainOnline
 import net.mamoe.mirai.internal.network.Packet
 import net.mamoe.mirai.internal.network.components.NoticePipelineContext
 import net.mamoe.mirai.internal.network.components.SimpleNoticeProcessor
@@ -66,7 +66,7 @@ internal class DirectMessageProcessor(
                                 guild = guild,
                                 time = item.head!!.contentHead?.time!!.toInt(),
                                 sender = sender,
-                                message = list.toGuildMessageChainOnline(bot, guild.id, MessageSourceKind.DIRECT),
+                                message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.DIRECT),
                             )
                         )
                     } else {
@@ -78,7 +78,7 @@ internal class DirectMessageProcessor(
                                 time = item.head!!.contentHead?.time!!.toInt(),
                                 sender = sender,
                                 senderName = sender.nameCard,
-                                message = list.toGuildMessageChainOnline(bot, guild.id, MessageSourceKind.DIRECT),
+                                message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.DIRECT),
                             )
                         )
                     }

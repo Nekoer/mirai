@@ -25,7 +25,6 @@ import net.mamoe.mirai.internal.asQQAndroidBot
 import net.mamoe.mirai.internal.contact.*
 import net.mamoe.mirai.internal.getGroupByUinOrCodeOrFail
 import net.mamoe.mirai.internal.message.MessageSourceSerializerImpl
-import net.mamoe.mirai.internal.message.toGuildMessageChainNoSource
 import net.mamoe.mirai.internal.message.toMessageChainNoSource
 import net.mamoe.mirai.internal.network.protocol.data.proto.Guild
 import net.mamoe.mirai.internal.network.protocol.data.proto.ImMsgBody
@@ -268,7 +267,7 @@ internal class OnlineMessageSourceFromGuildImpl(
     override val ids: IntArray get() = sequenceIds
     override val time: Int = msg.first().head?.contentHead?.time?.toInt()!!
     override var originalMessageLazy = lazy {
-        msg.toGuildMessageChainNoSource(bot, guildIdOrZero = guild.id, MessageSourceKind.GUILD)
+        msg.toMessageChainNoSource(bot, guildIdOrZero = guild.id, MessageSourceKind.GUILD)
     }
     override val originalMessage: MessageChain get() = originalMessageLazy.value
     override val isOriginalMessageInitialized: Boolean
@@ -333,7 +332,7 @@ internal class OnlineMessageSourceFromDirectImpl(
     override val ids: IntArray get() = sequenceIds
     override val time: Int = msg.first().head?.contentHead?.time?.toInt()!!
     override var originalMessageLazy = lazy {
-        msg.toGuildMessageChainNoSource(bot, guildIdOrZero = sender.guild.id, MessageSourceKind.DIRECT)
+        msg.toMessageChainNoSource(bot, guildIdOrZero = sender.guild.id, MessageSourceKind.DIRECT)
     }
     override val originalMessage: MessageChain get() = originalMessageLazy.value
     override val isOriginalMessageInitialized: Boolean

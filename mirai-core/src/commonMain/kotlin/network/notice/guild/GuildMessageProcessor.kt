@@ -20,8 +20,8 @@ import net.mamoe.mirai.internal.contact.GuildChannelImpl
 import net.mamoe.mirai.internal.contact.GuildImpl
 import net.mamoe.mirai.internal.contact.GuildMemberImpl
 import net.mamoe.mirai.internal.contact.appId
-import net.mamoe.mirai.internal.message.toGuildMessageChainNoSource
-import net.mamoe.mirai.internal.message.toGuildMessageChainOnline
+import net.mamoe.mirai.internal.message.toMessageChainNoSource
+import net.mamoe.mirai.internal.message.toMessageChainOnline
 import net.mamoe.mirai.internal.network.Packet
 import net.mamoe.mirai.internal.network.components.NoticePipelineContext
 import net.mamoe.mirai.internal.network.components.SimpleNoticeProcessor
@@ -127,7 +127,7 @@ internal class GuildMessageProcessor(
                             channel = channel,
                             time = item.head!!.contentHead?.time!!.toInt(),
                             sender = sender,
-                            message = list.toGuildMessageChainOnline(bot, guild.id, MessageSourceKind.GUILD),
+                            message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.GUILD),
                         ),
                     )
                 } else {
@@ -140,7 +140,7 @@ internal class GuildMessageProcessor(
                             time = item.head!!.contentHead?.time!!.toInt(),
                             sender = sender,
                             senderName = sender.nameCard,
-                            message = list.toGuildMessageChainNoSource(bot, guild.id, MessageSourceKind.GUILD),
+                            message = list.toMessageChainNoSource(bot, guild.id, MessageSourceKind.GUILD),
                         ),
                     )
                 }

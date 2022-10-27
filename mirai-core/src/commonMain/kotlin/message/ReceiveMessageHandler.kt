@@ -26,6 +26,8 @@ import net.mamoe.mirai.internal.network.protocol.data.proto.ImMsgBody
 import net.mamoe.mirai.internal.network.protocol.data.proto.MsgComm
 import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.utils.toLongUnsigned
+import kotlin.jvm.JvmName
+import kotlin.native.CName
 
 /**
  * 只在手动构造 [OfflineMessageSource] 时调用
@@ -54,14 +56,16 @@ internal suspend fun List<MsgComm.Msg>.toMessageChainOnline(
     return toMessageChain(bot, groupIdOrZero, true, messageSourceKind, facade).refineDeep(bot, refineContext)
 }
 
-internal suspend fun List<Guild.ChannelMsgContent>.toGuildMessageChainOnline(
+@JvmName("toMessageChainOnline2")
+@CName("toMessageChainOnline2")
+internal suspend fun List<Guild.ChannelMsgContent>.toMessageChainOnline(
     bot: Bot,
     guildIdOrZero: Long,
     messageSourceKind: MessageSourceKind,
     refineContext: RefineContext = EmptyRefineContext,
     facade: MessageProtocolFacade = MessageProtocolFacade
 ): MessageChain {
-    return toGuildMessageChain(bot, guildIdOrZero, true, messageSourceKind, facade).refineDeep(bot, refineContext)
+    return toMessageChain(bot, guildIdOrZero, true, messageSourceKind, facade).refineDeep(bot, refineContext)
 }
 
 internal suspend fun MsgComm.Msg.toMessageChainOnline(
@@ -103,16 +107,20 @@ internal fun List<MsgComm.Msg>.toMessageChainNoSource(
     return toMessageChain(bot, groupIdOrZero, null, messageSourceKind).refineLight(bot, refineContext)
 }
 
-internal fun List<Guild.ChannelMsgContent>.toGuildMessageChainNoSource(
+@JvmName("toMessageChainNoSource2")
+@CName("toMessageChainNoSource2")
+internal fun List<Guild.ChannelMsgContent>.toMessageChainNoSource(
     bot: Bot,
     guildIdOrZero: Long,
     messageSourceKind: MessageSourceKind,
     refineContext: RefineContext = EmptyRefineContext,
 ): MessageChain {
-    return toGuildMessageChain(bot, guildIdOrZero, null, messageSourceKind).refineLight(bot, refineContext)
+    return toMessageChain(bot, guildIdOrZero, null, messageSourceKind).refineLight(bot, refineContext)
 }
 
-private fun List<Guild.ChannelMsgContent>.toGuildMessageChain(
+@JvmName("toMessageChain2")
+@CName("toMessageChain2")
+private fun List<Guild.ChannelMsgContent>.toMessageChain(
     bot: Bot,
     guildIdOrZero: Long,
     onlineSource: Boolean?,

@@ -18,7 +18,6 @@ import kotlinx.serialization.Transient
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.internal.message.MessageSourceSerializerImpl
 import net.mamoe.mirai.internal.message.protocol.MessageProtocolFacade
-import net.mamoe.mirai.internal.message.toGuildMessageChainNoSource
 import net.mamoe.mirai.internal.message.toMessageChainNoSource
 import net.mamoe.mirai.internal.network.protocol.data.proto.Guild
 import net.mamoe.mirai.internal.network.protocol.data.proto.ImMsgBody
@@ -213,7 +212,7 @@ internal fun OfflineGuildMessageSourceImplData(
         time = head?.contentHead?.time?.toInt() ?: 0,
         fromId = head?.routingHead?.fromUin ?: 0,
         targetId = head?.routingHead?.guildId ?: head?.routingHead?.channelId ?: 0,
-        originalMessage = delegate.toGuildMessageChainNoSource(
+        originalMessage = delegate.toMessageChainNoSource(
             bot,
             guildIdOrZero = head?.routingHead?.guildId ?: 0,
             messageSourceKind = kind
