@@ -47,7 +47,7 @@ public interface Guild : Contact, CoroutineScope {
     /**
      * 子频道列表
      */
-    public val channelNodes: List<Channel>
+    public val channelNodes: List<GuildChannel>
 
     /**
      * 频道成员

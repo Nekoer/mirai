@@ -181,11 +181,11 @@ internal open class GroupMessageProtocolStrategy(
 }
 
 internal open class ChannelMessageProtocolStrategy(
-    private val contact: ChannelImpl,
-) : MessageProtocolStrategy<ChannelImpl> {
+    private val contact: GuildChannelImpl,
+) : MessageProtocolStrategy<GuildChannelImpl> {
     override suspend fun createPacketsForGeneralMessage(
         client: QQAndroidClient,
-        contact: ChannelImpl,
+        contact: GuildChannelImpl,
         message: MessageChain,
         originalMessage: MessageChain,
         fragmented: Boolean,

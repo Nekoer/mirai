@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import net.mamoe.mirai.utils.NotStableForInheritance
 
 @NotStableForInheritance
-public interface Channel : Contact, CoroutineScope, FileSupported, AudioSupported {
+public interface GuildChannel : Contact, CoroutineScope, FileSupported {
 
     /**
      * 子频道名称

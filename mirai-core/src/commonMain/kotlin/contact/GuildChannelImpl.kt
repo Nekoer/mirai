@@ -9,7 +9,7 @@
 
 package net.mamoe.mirai.internal.contact
 
-import net.mamoe.mirai.contact.Channel
+import net.mamoe.mirai.contact.GuildChannel
 import net.mamoe.mirai.contact.file.RemoteFiles
 import net.mamoe.mirai.data.ChannelInfo
 import net.mamoe.mirai.event.broadcast
@@ -33,40 +33,36 @@ import net.mamoe.mirai.message.MessageReceipt
 import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.ImageType
 import net.mamoe.mirai.message.data.Message
-import net.mamoe.mirai.message.data.OfflineAudio
 import net.mamoe.mirai.utils.*
 import kotlin.coroutines.CoroutineContext
 
 
-internal expect class ChannelImpl constructor(
+internal expect class GuildChannelImpl constructor(
     bot: QQAndroidBot,
     parentCoroutineContext: CoroutineContext,
     id: Long,
     guildId: Long,
     channelInfo: ChannelInfo,
-) : Channel, CommonChannelImpl {
+) : GuildChannel, CommonGuildChannelImpl {
     companion object
 }
 
 
 @Suppress("PropertyName")
-internal abstract class CommonChannelImpl constructor(
+internal abstract class CommonGuildChannelImpl constructor(
     bot: QQAndroidBot,
     parentCoroutineContext: CoroutineContext,
     override val id: Long,
     channelInfo: ChannelInfo,
-) : Channel, AbstractContact(bot, parentCoroutineContext) {
+) : GuildChannel, AbstractContact(bot, parentCoroutineContext) {
 
-    private val messageProtocolStrategy: MessageProtocolStrategy<ChannelImpl> =
+    private val messageProtocolStrategy: MessageProtocolStrategy<GuildChannelImpl> =
         ChannelMessageProtocolStrategy(this.cast())
 
-    override suspend fun uploadAudio(resource: ExternalResource): OfflineAudio {
-        throw EventCancelledException("The channel does not support upload audio")
-    }
 
     override val name: String = channelInfo.name
 
-    override suspend fun sendMessage(message: Message): MessageReceipt<Channel> {
+    override suspend fun sendMessage(message: Message): MessageReceipt<GuildChannel> {
         return sendMessageImpl(
             message,
             messageProtocolStrategy.cast(),
@@ -103,7 +99,7 @@ internal abstract class CommonChannelImpl constructor(
 
         when (response) {
             is ImgStore.QQMeetPicUp.Response.Failed -> {
-                ImageUploadEvent.Failed(this@CommonChannelImpl, resource, response.resultCode, response.message)
+                ImageUploadEvent.Failed(this@CommonGuildChannelImpl, resource, response.resultCode, response.message)
                     .broadcast()
                 if (response.message == "over file size max") throw OverFileSizeMaxException()
                 error("upload guild image failed with reason ${response.message}")
@@ -127,7 +123,7 @@ internal abstract class CommonChannelImpl constructor(
                         it.fileId = response.fileId.toInt()
                     }
                     .also { it.putIntoCache() }
-                    .also { ImageUploadEvent.Succeed(this@CommonChannelImpl, resource, it).broadcast() }
+                    .also { ImageUploadEvent.Succeed(this@CommonGuildChannelImpl, resource, it).broadcast() }
             }
 
             is ImgStore.QQMeetPicUp.Response.RequireUpload -> {
@@ -163,7 +159,7 @@ internal abstract class CommonChannelImpl constructor(
                     )
                 }.also { it.fileId = response.fileId.toInt() }
                     .also { it.putIntoCache() }
-                    .also { ImageUploadEvent.Succeed(this@CommonChannelImpl, resource, it).broadcast() }
+                    .also { ImageUploadEvent.Succeed(this@CommonGuildChannelImpl, resource, it).broadcast() }
             }
         }
     }

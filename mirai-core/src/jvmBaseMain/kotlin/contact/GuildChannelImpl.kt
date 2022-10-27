@@ -9,19 +9,19 @@
 
 package net.mamoe.mirai.internal.contact
 
-import net.mamoe.mirai.contact.Channel
+import net.mamoe.mirai.contact.GuildChannel
 import net.mamoe.mirai.data.ChannelInfo
 import net.mamoe.mirai.internal.QQAndroidBot
 import net.mamoe.mirai.utils.RemoteFile
 import kotlin.coroutines.CoroutineContext
 
-internal actual class ChannelImpl actual constructor(
+internal actual class GuildChannelImpl actual constructor(
     bot: QQAndroidBot,
     parentCoroutineContext: CoroutineContext,
     id: Long,
     override val guildId: Long,
     channelInfo: ChannelInfo,
-) : Channel, CommonChannelImpl(bot, parentCoroutineContext, id, channelInfo) {
+) : GuildChannel, CommonGuildChannelImpl(bot, parentCoroutineContext, id, channelInfo) {
     actual companion object;
 
     @Deprecated("Please use files instead.", replaceWith = ReplaceWith("files.root"), level = DeprecationLevel.WARNING)

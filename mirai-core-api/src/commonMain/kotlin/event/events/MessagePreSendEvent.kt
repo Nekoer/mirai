@@ -62,7 +62,7 @@ public data class GroupMessagePreSendEvent @MiraiInternalApi constructor(
  */
 public data class ChannelMessagePreSendEvent @MiraiInternalApi constructor(
     /** 发信目标. */
-    public override val target: Channel,
+    public override val target: GuildChannel,
     /** 待发送的消息. 修改后将会同时应用于发送. */
     public override var message: Message
 ) : MessagePreSendEvent()

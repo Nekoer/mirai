@@ -264,7 +264,7 @@ public class GroupMessageSyncEvent private constructor(
 public class GuildMessageSyncEvent private constructor(
     private val _client: OtherClient?,
     public val guild: Guild,
-    public val channel: Channel,
+    public val channel: GuildChannel,
     public override val message: MessageChain,
     public override val sender: GuildMember,
     public override val senderName: String,
@@ -283,7 +283,7 @@ public class GuildMessageSyncEvent private constructor(
     public constructor(
         client: OtherClient,
         guild: Guild,
-        channel: Channel,
+        channel: GuildChannel,
         message: MessageChain,
         sender: GuildMember,
         senderName: String,
@@ -296,7 +296,7 @@ public class GuildMessageSyncEvent private constructor(
     }
 
     override val bot: Bot get() = sender.bot
-    override val subject: Channel get() = channel
+    override val subject: GuildChannel get() = channel
     override val source: OnlineMessageSource.Incoming.FromGuild get() = message.source as OnlineMessageSource.Incoming.FromGuild
 
     public override fun toString(): String =

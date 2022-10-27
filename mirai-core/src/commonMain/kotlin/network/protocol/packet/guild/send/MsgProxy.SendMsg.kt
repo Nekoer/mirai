@@ -12,7 +12,7 @@ package net.mamoe.mirai.internal.network.protocol.packet.guild.send
 import io.ktor.utils.io.core.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
-import net.mamoe.mirai.contact.Channel
+import net.mamoe.mirai.contact.GuildChannel
 import net.mamoe.mirai.contact.GuildMember
 import net.mamoe.mirai.internal.QQAndroidBot
 import net.mamoe.mirai.internal.message.image.OfflineGuildImage
@@ -74,7 +74,7 @@ internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response
 
     operator fun invoke(
         client: QQAndroidClient,
-        channel: Channel,
+        channel: GuildChannel,
         message: MessageChain
     ) = buildOutgoingUniPacket(client) {
         val routingHead = Guild.ChannelRoutingHead(
@@ -319,7 +319,7 @@ internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response
 
 internal inline fun MsgProxySendMsg.createToChannel(
     client: QQAndroidClient,
-    channel: Channel,
+    channel: GuildChannel,
     message: MessageChain,
     originalMessage: MessageChain,
     fragmented: Boolean,

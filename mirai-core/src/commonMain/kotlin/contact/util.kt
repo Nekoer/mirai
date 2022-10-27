@@ -67,7 +67,7 @@ internal fun net.mamoe.mirai.event.events.MessageEvent.logMessageReceived() {
 
     fun renderGuildMessage(
         guild: Guild,
-        channel: Channel,
+        channel: GuildChannel,
         senderName: String,
         sender: GuildMember,
         message: MessageChain
@@ -81,7 +81,7 @@ internal fun net.mamoe.mirai.event.events.MessageEvent.logMessageReceived() {
 
     fun renderGuildMessageSync(
         guild: Guild,
-        channel: Channel,
+        channel: GuildChannel,
         sender: GuildMember,
         message: MessageChain
     ): String {

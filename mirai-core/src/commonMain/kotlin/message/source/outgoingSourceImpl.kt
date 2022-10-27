@@ -265,7 +265,7 @@ internal class OnlineMessageSourceToChannelImpl(
     override val time: Int,
     override var originalMessage: MessageChain,
     override val sender: Bot,
-    override val target: Channel,
+    override val target: GuildChannel,
     providedSequenceIds: IntArray? = null,
 ) : OnlineMessageSource.Outgoing.ToChannel(), MessageSourceInternal, OutgoingMessageSourceInternal {
     object Serializer : KSerializer<MessageSource> by MessageSourceSerializerImpl("OnlineMessageSourceToGroup")

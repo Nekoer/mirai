@@ -16,7 +16,7 @@ import net.mamoe.mirai.event.AbstractEvent
 import net.mamoe.mirai.event.Event
 import net.mamoe.mirai.event.events.GuildMessageEvent
 import net.mamoe.mirai.event.events.GuildMessageSyncEvent
-import net.mamoe.mirai.internal.contact.ChannelImpl
+import net.mamoe.mirai.internal.contact.GuildChannelImpl
 import net.mamoe.mirai.internal.contact.GuildImpl
 import net.mamoe.mirai.internal.contact.GuildMemberImpl
 import net.mamoe.mirai.internal.contact.appId
@@ -57,7 +57,7 @@ internal class GuildMessageProcessor(
                 (item.head?.routingHead?.fromTinyId == bot.tinyId) || (item.head?.routingHead?.fromUin == bot.id)
             val guild = item.head?.routingHead?.guildId?.let { bot.getGuild(it) } as GuildImpl? ?: return
             val channel =
-                guild.channelNodes.find { it.id == item.head?.routingHead!!.channelId } as ChannelImpl? ?: return
+                guild.channelNodes.find { it.id == item.head?.routingHead!!.channelId } as GuildChannelImpl? ?: return
             val sender =
                 guild.members.find { it.id == item.head?.routingHead!!.fromTinyId } as GuildMemberImpl? ?: return
 

@@ -149,8 +149,8 @@ public sealed class OnlineMessageSource : MessageSource() {
             public companion object Key :
                 AbstractPolymorphicMessageKey<Outgoing, ToChannel>(Outgoing, { it.safeCast() })
 
-            public abstract override val target: Channel
-            public final override val subject: Channel get() = target
+            public abstract override val target: GuildChannel
+            public final override val subject: GuildChannel get() = target
 
             final override fun toString(): String {
                 return "[mirai:source:ids=${ids.contentToString()}, internalIds=${internalIds.contentToString()}, from $fromId to channel $targetId at $time]"

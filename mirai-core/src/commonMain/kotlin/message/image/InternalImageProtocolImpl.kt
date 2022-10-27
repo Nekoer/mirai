@@ -10,9 +10,9 @@
 package net.mamoe.mirai.internal.message.image
 
 import net.mamoe.mirai.Bot
-import net.mamoe.mirai.contact.Channel
 import net.mamoe.mirai.contact.Contact
 import net.mamoe.mirai.contact.Group
+import net.mamoe.mirai.contact.GuildChannel
 import net.mamoe.mirai.contact.User
 import net.mamoe.mirai.internal.QQAndroidBot
 import net.mamoe.mirai.internal.asQQAndroidBot
@@ -51,16 +51,16 @@ internal class InternalImageProtocolImpl : InternalImageProtocol {
             val checkers = mapOf(
                 Group::class to ImageUploadedCheckerGroup(),
                 User::class to ImageUploadedCheckerUser(),
-                Channel::class to ImageUploadedCheckerChannel(),
+                GuildChannel::class to ImageUploadedCheckerChannel(),
                 null to ImageUploadedCheckerFallback()
             )
         }
     }
 
-    class ImageUploadedCheckerChannel : ImageUploadedChecker<Channel> {
+    class ImageUploadedCheckerChannel : ImageUploadedChecker<GuildChannel> {
         override suspend fun isUploaded(
             bot: QQAndroidBot,
-            context: Channel,
+            context: GuildChannel,
             md5: ByteArray,
             type: ImageType,
             size: Long,

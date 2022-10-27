@@ -16,7 +16,7 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import net.mamoe.mirai.contact.ContactList
 import net.mamoe.mirai.internal.QQAndroidBot
-import net.mamoe.mirai.internal.contact.ChannelImpl
+import net.mamoe.mirai.internal.contact.GuildChannelImpl
 import net.mamoe.mirai.internal.contact.GuildImpl
 import net.mamoe.mirai.internal.contact.GuildMemberImpl
 import net.mamoe.mirai.internal.contact.info.*
@@ -57,7 +57,7 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                         )
                                     )
                                 //储存子频道列表
-                                val channelList = mutableListOf<ChannelImpl>()
+                                val channelList = mutableListOf<GuildChannelImpl>()
 
                                 channel.origin.rsp.rsp.channels.forEach {
                                     val slowModeInfosItemImpl = mutableListOf<SlowModeInfosItemImpl>()
@@ -72,7 +72,7 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                         )
                                     }
                                     channelList.add(
-                                        ChannelImpl(
+                                        GuildChannelImpl(
                                             bot = bot,
                                             channelInfo = ChannelInfoImpl(
                                                 id = it.channelId,

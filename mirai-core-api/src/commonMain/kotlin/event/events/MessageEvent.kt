@@ -286,7 +286,7 @@ public class StrangerMessageEvent constructor(
  */
 public class GuildMessageEvent(
     override val guild: Guild,
-    override val channel: Channel,
+    override val channel: GuildChannel,
     override val sender: GuildMember,
     override val time: Int,
     override val message: MessageChain,
@@ -294,7 +294,7 @@ public class GuildMessageEvent(
 
     override val bot: Bot
         get() = sender.bot
-    override val subject: Channel
+    override val subject: GuildChannel
         get() = channel
     override val senderName: String
         get() = sender.nameCard

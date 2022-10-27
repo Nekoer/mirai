@@ -9,7 +9,7 @@
 
 package net.mamoe.mirai.internal.message.protocol.impl
 
-import net.mamoe.mirai.contact.Channel
+import net.mamoe.mirai.contact.GuildChannel
 import net.mamoe.mirai.contact.GuildMember
 import net.mamoe.mirai.contact.User
 import net.mamoe.mirai.internal.contact.GroupImpl
@@ -135,7 +135,7 @@ internal class ImageProtocol : MessageProtocol() {
                 }
 
                 is OfflineGuildImage -> {
-                    if (contact is Channel) {
+                    if (contact is GuildChannel) {
                         collect(ImMsgBody.Elem(notOnlineImage = data.toJceData().toNotOnlineImage()))
                     } else {
                         collect(ImMsgBody.Elem(customFace = data.toJceData()))

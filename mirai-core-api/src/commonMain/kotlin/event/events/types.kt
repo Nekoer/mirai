@@ -53,7 +53,7 @@ public interface GroupEvent : BotEvent {
 public interface GuildEvent : BotEvent {
     public val guild: Guild
 
-    public val channel: Channel
+    public val channel: GuildChannel
     override val bot: Bot
         get() = guild.bot
 }

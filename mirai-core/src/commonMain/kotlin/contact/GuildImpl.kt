@@ -39,7 +39,7 @@ internal expect class GuildImpl constructor(
     id: Long,
     guildInfo: GuildInfo,
     members: ContactList<GuildMemberImpl>,
-    channelNodes: List<ChannelImpl>,
+    channelNodes: List<GuildChannelImpl>,
 ) : Guild, CommonGuildImpl {
     companion object;
 }
@@ -50,7 +50,7 @@ internal abstract class CommonGuildImpl constructor(
     parentCoroutineContext: CoroutineContext,
     override val id: Long,
     guildInfo: GuildInfo,
-    override val channelNodes: List<ChannelImpl>,
+    override val channelNodes: List<GuildChannelImpl>,
     override val members: ContactList<GuildMemberImpl>,
 ) : Guild, AbstractContact(bot, parentCoroutineContext) {
     companion object;
