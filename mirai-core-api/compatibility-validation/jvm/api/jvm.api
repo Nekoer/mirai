@@ -206,12 +206,6 @@ public final class net/mamoe/mirai/contact/BotIsBeingMutedException : net/mamoe/
 	public fun getTarget ()Lnet/mamoe/mirai/contact/Group;
 }
 
-public abstract interface class net/mamoe/mirai/contact/Channel : kotlinx/coroutines/CoroutineScope, net/mamoe/mirai/contact/AudioSupported, net/mamoe/mirai/contact/Contact, net/mamoe/mirai/contact/FileSupported {
-	public abstract fun getGuildId ()J
-	public abstract fun getId ()J
-	public abstract fun getName ()Ljava/lang/String;
-}
-
 public final class net/mamoe/mirai/contact/ClientKind : java/lang/Enum {
 	public static final field ANDROID_PAD Lnet/mamoe/mirai/contact/ClientKind;
 	public static final field AOL_CHAOJIHUIYUAN Lnet/mamoe/mirai/contact/ClientKind;
@@ -446,6 +440,12 @@ public abstract interface class net/mamoe/mirai/contact/Guild : kotlinx/coroutin
 	public fun getOrFail (J)Lnet/mamoe/mirai/contact/GuildMember;
 	public abstract fun getOwner ()Lnet/mamoe/mirai/contact/GuildMember;
 	public abstract fun quit (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class net/mamoe/mirai/contact/GuildChannel : kotlinx/coroutines/CoroutineScope, net/mamoe/mirai/contact/Contact, net/mamoe/mirai/contact/FileSupported {
+	public abstract fun getGuildId ()J
+	public abstract fun getId ()J
+	public abstract fun getName ()Ljava/lang/String;
 }
 
 public abstract interface class net/mamoe/mirai/contact/GuildMember : net/mamoe/mirai/contact/User {
@@ -1105,31 +1105,6 @@ public abstract interface class net/mamoe/mirai/contact/roaming/RoamingSupported
 	public abstract fun getRoamingMessages ()Lnet/mamoe/mirai/contact/roaming/RoamingMessages;
 }
 
-public abstract interface class net/mamoe/mirai/data/ChannelInfo {
-	public abstract fun getChannelType ()S
-	public abstract fun getCreateTime ()J
-	public abstract fun getCreatorTinyId ()J
-	public abstract fun getFinalNotifyType ()S
-	public abstract fun getId ()J
-	public abstract fun getName ()Ljava/lang/String;
-	public abstract fun getSlowModeInfos ()Ljava/util/List;
-	public abstract fun getTalkPermission ()S
-	public abstract fun getTopMsg ()Lnet/mamoe/mirai/data/ChannelInfo$TopMsg;
-}
-
-public abstract interface class net/mamoe/mirai/data/ChannelInfo$SlowModeInfosItem {
-	public abstract fun getSlowModeCircle ()J
-	public abstract fun getSlowModeKey ()J
-	public abstract fun getSlowModeText ()Ljava/lang/String;
-	public abstract fun getSpeakFrequency ()J
-}
-
-public abstract interface class net/mamoe/mirai/data/ChannelInfo$TopMsg {
-	public abstract fun getTopMsgOperatorTinyId ()J
-	public abstract fun getTopMsgSeq ()J
-	public abstract fun getTopMsgTime ()J
-}
-
 public abstract interface class net/mamoe/mirai/data/FriendInfo : net/mamoe/mirai/data/UserInfo {
 	public abstract fun getFriendGroupId ()I
 	public abstract fun getNick ()Ljava/lang/String;
@@ -1232,6 +1207,31 @@ public abstract interface class net/mamoe/mirai/data/GroupInfo {
 	public abstract fun isTitleVisible ()Z
 }
 
+public abstract interface class net/mamoe/mirai/data/GuildChannelInfo {
+	public abstract fun getChannelType ()S
+	public abstract fun getCreateTime ()J
+	public abstract fun getCreatorTinyId ()J
+	public abstract fun getFinalNotifyType ()S
+	public abstract fun getId ()J
+	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun getSlowModeInfos ()Ljava/util/List;
+	public abstract fun getTalkPermission ()S
+	public abstract fun getTopMsg ()Lnet/mamoe/mirai/data/GuildChannelInfo$TopMsg;
+}
+
+public abstract interface class net/mamoe/mirai/data/GuildChannelInfo$SlowModeInfosItem {
+	public abstract fun getSlowModeCircle ()J
+	public abstract fun getSlowModeKey ()J
+	public abstract fun getSlowModeText ()Ljava/lang/String;
+	public abstract fun getSpeakFrequency ()J
+}
+
+public abstract interface class net/mamoe/mirai/data/GuildChannelInfo$TopMsg {
+	public abstract fun getTopMsgOperatorTinyId ()J
+	public abstract fun getTopMsgSeq ()J
+	public abstract fun getTopMsgTime ()J
+}
+
 public abstract interface class net/mamoe/mirai/data/GuildInfo {
 	public abstract fun getAvatarUrl ()Ljava/lang/String;
 	public abstract fun getCoverUrl ()Ljava/lang/String;
@@ -1244,7 +1244,7 @@ public abstract interface class net/mamoe/mirai/data/GuildInfo {
 	public abstract fun getMaxRobotCount ()S
 	public abstract fun getMemberCount ()J
 	public abstract fun getName ()Ljava/lang/String;
-	public abstract fun getOwnerId ()J
+	public abstract fun getOwnerTinyId ()J
 }
 
 public abstract interface class net/mamoe/mirai/data/GuildMemberInfo {
@@ -2030,104 +2030,6 @@ public final class net/mamoe/mirai/event/events/BotUnmuteEvent : net/mamoe/mirai
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class net/mamoe/mirai/event/events/ChannelMessagePostSendEvent : net/mamoe/mirai/event/events/MessagePostSendEvent {
-	public final fun component1 ()Lnet/mamoe/mirai/contact/Channel;
-	public final fun component2 ()Lnet/mamoe/mirai/message/data/MessageChain;
-	public final fun component3 ()Ljava/lang/Throwable;
-	public final fun component4 ()Lnet/mamoe/mirai/message/MessageReceipt;
-	public final fun copy (Lnet/mamoe/mirai/contact/Channel;Lnet/mamoe/mirai/message/data/MessageChain;Ljava/lang/Throwable;Lnet/mamoe/mirai/message/MessageReceipt;)Lnet/mamoe/mirai/event/events/ChannelMessagePostSendEvent;
-	public static synthetic fun copy$default (Lnet/mamoe/mirai/event/events/ChannelMessagePostSendEvent;Lnet/mamoe/mirai/contact/Channel;Lnet/mamoe/mirai/message/data/MessageChain;Ljava/lang/Throwable;Lnet/mamoe/mirai/message/MessageReceipt;ILjava/lang/Object;)Lnet/mamoe/mirai/event/events/ChannelMessagePostSendEvent;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getException ()Ljava/lang/Throwable;
-	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
-	public fun getReceipt ()Lnet/mamoe/mirai/message/MessageReceipt;
-	public fun getTarget ()Lnet/mamoe/mirai/contact/Channel;
-	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/Contact;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/mamoe/mirai/event/events/ChannelMessagePreSendEvent : net/mamoe/mirai/event/events/MessagePreSendEvent {
-	public final fun component1 ()Lnet/mamoe/mirai/contact/Channel;
-	public final fun component2 ()Lnet/mamoe/mirai/message/data/Message;
-	public final fun copy (Lnet/mamoe/mirai/contact/Channel;Lnet/mamoe/mirai/message/data/Message;)Lnet/mamoe/mirai/event/events/ChannelMessagePreSendEvent;
-	public static synthetic fun copy$default (Lnet/mamoe/mirai/event/events/ChannelMessagePreSendEvent;Lnet/mamoe/mirai/contact/Channel;Lnet/mamoe/mirai/message/data/Message;ILjava/lang/Object;)Lnet/mamoe/mirai/event/events/ChannelMessagePreSendEvent;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getMessage ()Lnet/mamoe/mirai/message/data/Message;
-	public fun getTarget ()Lnet/mamoe/mirai/contact/Channel;
-	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/Contact;
-	public fun hashCode ()I
-	public fun setMessage (Lnet/mamoe/mirai/message/data/Message;)V
-	public fun toString ()Ljava/lang/String;
-}
-
-public abstract interface class net/mamoe/mirai/event/events/DirectEvent : net/mamoe/mirai/event/events/BotEvent {
-	public fun getBot ()Lnet/mamoe/mirai/Bot;
-	public abstract fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
-}
-
-public final class net/mamoe/mirai/event/events/DirectMessageEvent : net/mamoe/mirai/event/events/AbstractMessageEvent, net/mamoe/mirai/event/events/DirectEvent, net/mamoe/mirai/event/events/MessageEvent {
-	public fun <init> (Lnet/mamoe/mirai/contact/Guild;Lnet/mamoe/mirai/contact/GuildMember;ILnet/mamoe/mirai/message/data/MessageChain;)V
-	public fun getBot ()Lnet/mamoe/mirai/Bot;
-	public fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
-	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
-	public fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
-	public synthetic fun getSender ()Lnet/mamoe/mirai/contact/User;
-	public fun getSenderName ()Ljava/lang/String;
-	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
-	public fun getSubject ()Lnet/mamoe/mirai/contact/GuildMember;
-	public fun getTime ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/mamoe/mirai/event/events/DirectMessagePostSendEvent : net/mamoe/mirai/event/events/MessagePostSendEvent {
-	public final fun component1 ()Lnet/mamoe/mirai/contact/GuildMember;
-	public final fun component2 ()Lnet/mamoe/mirai/message/data/MessageChain;
-	public final fun component3 ()Ljava/lang/Throwable;
-	public final fun component4 ()Lnet/mamoe/mirai/message/MessageReceipt;
-	public final fun copy (Lnet/mamoe/mirai/contact/GuildMember;Lnet/mamoe/mirai/message/data/MessageChain;Ljava/lang/Throwable;Lnet/mamoe/mirai/message/MessageReceipt;)Lnet/mamoe/mirai/event/events/DirectMessagePostSendEvent;
-	public static synthetic fun copy$default (Lnet/mamoe/mirai/event/events/DirectMessagePostSendEvent;Lnet/mamoe/mirai/contact/GuildMember;Lnet/mamoe/mirai/message/data/MessageChain;Ljava/lang/Throwable;Lnet/mamoe/mirai/message/MessageReceipt;ILjava/lang/Object;)Lnet/mamoe/mirai/event/events/DirectMessagePostSendEvent;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getException ()Ljava/lang/Throwable;
-	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
-	public fun getReceipt ()Lnet/mamoe/mirai/message/MessageReceipt;
-	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/Contact;
-	public fun getTarget ()Lnet/mamoe/mirai/contact/GuildMember;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/mamoe/mirai/event/events/DirectMessagePreSendEvent : net/mamoe/mirai/event/events/MessagePreSendEvent {
-	public final fun component1 ()Lnet/mamoe/mirai/contact/GuildMember;
-	public final fun component2 ()Lnet/mamoe/mirai/message/data/Message;
-	public final fun copy (Lnet/mamoe/mirai/contact/GuildMember;Lnet/mamoe/mirai/message/data/Message;)Lnet/mamoe/mirai/event/events/DirectMessagePreSendEvent;
-	public static synthetic fun copy$default (Lnet/mamoe/mirai/event/events/DirectMessagePreSendEvent;Lnet/mamoe/mirai/contact/GuildMember;Lnet/mamoe/mirai/message/data/Message;ILjava/lang/Object;)Lnet/mamoe/mirai/event/events/DirectMessagePreSendEvent;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getMessage ()Lnet/mamoe/mirai/message/data/Message;
-	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/Contact;
-	public fun getTarget ()Lnet/mamoe/mirai/contact/GuildMember;
-	public fun hashCode ()I
-	public fun setMessage (Lnet/mamoe/mirai/message/data/Message;)V
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/mamoe/mirai/event/events/DirectMessageSyncEvent : net/mamoe/mirai/event/events/AbstractMessageEvent, net/mamoe/mirai/event/events/MessageSyncEvent {
-	public fun <init> (Lnet/mamoe/mirai/contact/OtherClient;Lnet/mamoe/mirai/contact/Guild;Lnet/mamoe/mirai/message/data/MessageChain;Lnet/mamoe/mirai/contact/GuildMember;Ljava/lang/String;I)V
-	public fun getBot ()Lnet/mamoe/mirai/Bot;
-	public fun getClient ()Lnet/mamoe/mirai/contact/OtherClient;
-	public final fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
-	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
-	public fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
-	public synthetic fun getSender ()Lnet/mamoe/mirai/contact/User;
-	public fun getSenderName ()Ljava/lang/String;
-	public fun getSource ()Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromDirect;
-	public synthetic fun getSource ()Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming;
-	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
-	public fun getSubject ()Lnet/mamoe/mirai/contact/GuildMember;
-	public fun getTime ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class net/mamoe/mirai/event/events/EventCancelledException : java/lang/RuntimeException {
 	public fun <init> ()V
 	public fun <init> (Ljava/lang/String;)V
@@ -2569,41 +2471,139 @@ public final class net/mamoe/mirai/event/events/GroupTempMessageSyncEvent : net/
 	public fun getTime ()I
 }
 
-public abstract interface class net/mamoe/mirai/event/events/GuildEvent : net/mamoe/mirai/event/events/BotEvent {
+public final class net/mamoe/mirai/event/events/GuildChannelMessagePostSendEvent : net/mamoe/mirai/event/events/MessagePostSendEvent {
+	public final fun component1 ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public final fun component2 ()Lnet/mamoe/mirai/message/data/MessageChain;
+	public final fun component3 ()Ljava/lang/Throwable;
+	public final fun component4 ()Lnet/mamoe/mirai/message/MessageReceipt;
+	public final fun copy (Lnet/mamoe/mirai/contact/GuildChannel;Lnet/mamoe/mirai/message/data/MessageChain;Ljava/lang/Throwable;Lnet/mamoe/mirai/message/MessageReceipt;)Lnet/mamoe/mirai/event/events/GuildChannelMessagePostSendEvent;
+	public static synthetic fun copy$default (Lnet/mamoe/mirai/event/events/GuildChannelMessagePostSendEvent;Lnet/mamoe/mirai/contact/GuildChannel;Lnet/mamoe/mirai/message/data/MessageChain;Ljava/lang/Throwable;Lnet/mamoe/mirai/message/MessageReceipt;ILjava/lang/Object;)Lnet/mamoe/mirai/event/events/GuildChannelMessagePostSendEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getException ()Ljava/lang/Throwable;
+	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
+	public fun getReceipt ()Lnet/mamoe/mirai/message/MessageReceipt;
+	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getTarget ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/mamoe/mirai/event/events/GuildChannelMessagePreSendEvent : net/mamoe/mirai/event/events/MessagePreSendEvent {
+	public final fun component1 ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public final fun component2 ()Lnet/mamoe/mirai/message/data/Message;
+	public final fun copy (Lnet/mamoe/mirai/contact/GuildChannel;Lnet/mamoe/mirai/message/data/Message;)Lnet/mamoe/mirai/event/events/GuildChannelMessagePreSendEvent;
+	public static synthetic fun copy$default (Lnet/mamoe/mirai/event/events/GuildChannelMessagePreSendEvent;Lnet/mamoe/mirai/contact/GuildChannel;Lnet/mamoe/mirai/message/data/Message;ILjava/lang/Object;)Lnet/mamoe/mirai/event/events/GuildChannelMessagePreSendEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMessage ()Lnet/mamoe/mirai/message/data/Message;
+	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getTarget ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public fun hashCode ()I
+	public fun setMessage (Lnet/mamoe/mirai/message/data/Message;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class net/mamoe/mirai/event/events/GuildDirectEvent : net/mamoe/mirai/event/events/BotEvent {
 	public fun getBot ()Lnet/mamoe/mirai/Bot;
-	public abstract fun getChannel ()Lnet/mamoe/mirai/contact/Channel;
 	public abstract fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
 }
 
-public final class net/mamoe/mirai/event/events/GuildMessageEvent : net/mamoe/mirai/event/events/AbstractMessageEvent, net/mamoe/mirai/event/events/GuildEvent, net/mamoe/mirai/event/events/MessageEvent {
-	public fun <init> (Lnet/mamoe/mirai/contact/Guild;Lnet/mamoe/mirai/contact/Channel;Lnet/mamoe/mirai/contact/GuildMember;ILnet/mamoe/mirai/message/data/MessageChain;)V
+public final class net/mamoe/mirai/event/events/GuildDirectMessageEvent : net/mamoe/mirai/event/events/AbstractMessageEvent, net/mamoe/mirai/event/events/GuildDirectEvent, net/mamoe/mirai/event/events/MessageEvent {
+	public fun <init> (Lnet/mamoe/mirai/contact/Guild;Lnet/mamoe/mirai/contact/GuildMember;ILnet/mamoe/mirai/message/data/MessageChain;)V
 	public fun getBot ()Lnet/mamoe/mirai/Bot;
-	public fun getChannel ()Lnet/mamoe/mirai/contact/Channel;
 	public fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
 	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
 	public fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
 	public synthetic fun getSender ()Lnet/mamoe/mirai/contact/User;
 	public fun getSenderName ()Ljava/lang/String;
-	public fun getSubject ()Lnet/mamoe/mirai/contact/Channel;
 	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getSubject ()Lnet/mamoe/mirai/contact/GuildMember;
 	public fun getTime ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class net/mamoe/mirai/event/events/GuildMessageSyncEvent : net/mamoe/mirai/event/events/AbstractMessageEvent, net/mamoe/mirai/event/events/MessageSyncEvent {
-	public fun <init> (Lnet/mamoe/mirai/contact/OtherClient;Lnet/mamoe/mirai/contact/Guild;Lnet/mamoe/mirai/contact/Channel;Lnet/mamoe/mirai/message/data/MessageChain;Lnet/mamoe/mirai/contact/GuildMember;Ljava/lang/String;I)V
+public final class net/mamoe/mirai/event/events/GuildDirectMessagePostSendEvent : net/mamoe/mirai/event/events/MessagePostSendEvent {
+	public final fun component1 ()Lnet/mamoe/mirai/contact/GuildMember;
+	public final fun component2 ()Lnet/mamoe/mirai/message/data/MessageChain;
+	public final fun component3 ()Ljava/lang/Throwable;
+	public final fun component4 ()Lnet/mamoe/mirai/message/MessageReceipt;
+	public final fun copy (Lnet/mamoe/mirai/contact/GuildMember;Lnet/mamoe/mirai/message/data/MessageChain;Ljava/lang/Throwable;Lnet/mamoe/mirai/message/MessageReceipt;)Lnet/mamoe/mirai/event/events/GuildDirectMessagePostSendEvent;
+	public static synthetic fun copy$default (Lnet/mamoe/mirai/event/events/GuildDirectMessagePostSendEvent;Lnet/mamoe/mirai/contact/GuildMember;Lnet/mamoe/mirai/message/data/MessageChain;Ljava/lang/Throwable;Lnet/mamoe/mirai/message/MessageReceipt;ILjava/lang/Object;)Lnet/mamoe/mirai/event/events/GuildDirectMessagePostSendEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getException ()Ljava/lang/Throwable;
+	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
+	public fun getReceipt ()Lnet/mamoe/mirai/message/MessageReceipt;
+	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getTarget ()Lnet/mamoe/mirai/contact/GuildMember;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/mamoe/mirai/event/events/GuildDirectMessagePreSendEvent : net/mamoe/mirai/event/events/MessagePreSendEvent {
+	public final fun component1 ()Lnet/mamoe/mirai/contact/GuildMember;
+	public final fun component2 ()Lnet/mamoe/mirai/message/data/Message;
+	public final fun copy (Lnet/mamoe/mirai/contact/GuildMember;Lnet/mamoe/mirai/message/data/Message;)Lnet/mamoe/mirai/event/events/GuildDirectMessagePreSendEvent;
+	public static synthetic fun copy$default (Lnet/mamoe/mirai/event/events/GuildDirectMessagePreSendEvent;Lnet/mamoe/mirai/contact/GuildMember;Lnet/mamoe/mirai/message/data/Message;ILjava/lang/Object;)Lnet/mamoe/mirai/event/events/GuildDirectMessagePreSendEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMessage ()Lnet/mamoe/mirai/message/data/Message;
+	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getTarget ()Lnet/mamoe/mirai/contact/GuildMember;
+	public fun hashCode ()I
+	public fun setMessage (Lnet/mamoe/mirai/message/data/Message;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/mamoe/mirai/event/events/GuildDirectMessageSyncEvent : net/mamoe/mirai/event/events/AbstractMessageEvent, net/mamoe/mirai/event/events/MessageSyncEvent {
+	public fun <init> (Lnet/mamoe/mirai/contact/OtherClient;Lnet/mamoe/mirai/contact/Guild;Lnet/mamoe/mirai/message/data/MessageChain;Lnet/mamoe/mirai/contact/GuildMember;Ljava/lang/String;I)V
 	public fun getBot ()Lnet/mamoe/mirai/Bot;
-	public final fun getChannel ()Lnet/mamoe/mirai/contact/Channel;
 	public fun getClient ()Lnet/mamoe/mirai/contact/OtherClient;
 	public final fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
 	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
 	public fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
 	public synthetic fun getSender ()Lnet/mamoe/mirai/contact/User;
 	public fun getSenderName ()Ljava/lang/String;
-	public fun getSource ()Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuild;
+	public fun getSource ()Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuildDirect;
 	public synthetic fun getSource ()Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming;
-	public fun getSubject ()Lnet/mamoe/mirai/contact/Channel;
 	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getSubject ()Lnet/mamoe/mirai/contact/GuildMember;
+	public fun getTime ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class net/mamoe/mirai/event/events/GuildEvent : net/mamoe/mirai/event/events/BotEvent {
+	public fun getBot ()Lnet/mamoe/mirai/Bot;
+	public abstract fun getChannel ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public abstract fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
+}
+
+public final class net/mamoe/mirai/event/events/GuildMessageEvent : net/mamoe/mirai/event/events/AbstractMessageEvent, net/mamoe/mirai/event/events/GuildEvent, net/mamoe/mirai/event/events/MessageEvent {
+	public fun <init> (Lnet/mamoe/mirai/contact/Guild;Lnet/mamoe/mirai/contact/GuildChannel;Lnet/mamoe/mirai/contact/GuildMember;ILnet/mamoe/mirai/message/data/MessageChain;)V
+	public fun getBot ()Lnet/mamoe/mirai/Bot;
+	public fun getChannel ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
+	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
+	public fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
+	public synthetic fun getSender ()Lnet/mamoe/mirai/contact/User;
+	public fun getSenderName ()Ljava/lang/String;
+	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getSubject ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public fun getTime ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/mamoe/mirai/event/events/GuildMessageSyncEvent : net/mamoe/mirai/event/events/AbstractMessageEvent, net/mamoe/mirai/event/events/MessageSyncEvent {
+	public fun <init> (Lnet/mamoe/mirai/contact/OtherClient;Lnet/mamoe/mirai/contact/Guild;Lnet/mamoe/mirai/contact/GuildChannel;Lnet/mamoe/mirai/message/data/MessageChain;Lnet/mamoe/mirai/contact/GuildMember;Ljava/lang/String;I)V
+	public fun getBot ()Lnet/mamoe/mirai/Bot;
+	public final fun getChannel ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public fun getClient ()Lnet/mamoe/mirai/contact/OtherClient;
+	public final fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
+	public fun getMessage ()Lnet/mamoe/mirai/message/data/MessageChain;
+	public fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
+	public synthetic fun getSender ()Lnet/mamoe/mirai/contact/User;
+	public fun getSenderName ()Ljava/lang/String;
+	public fun getSource ()Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuildChannel;
+	public synthetic fun getSource ()Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming;
+	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getSubject ()Lnet/mamoe/mirai/contact/GuildChannel;
 	public fun getTime ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -4785,10 +4785,10 @@ public class net/mamoe/mirai/message/data/MessageSourceBuilder {
 
 public final class net/mamoe/mirai/message/data/MessageSourceKind : java/lang/Enum {
 	public static final field Companion Lnet/mamoe/mirai/message/data/MessageSourceKind$Companion;
-	public static final field DIRECT Lnet/mamoe/mirai/message/data/MessageSourceKind;
 	public static final field FRIEND Lnet/mamoe/mirai/message/data/MessageSourceKind;
 	public static final field GROUP Lnet/mamoe/mirai/message/data/MessageSourceKind;
 	public static final field GUILD Lnet/mamoe/mirai/message/data/MessageSourceKind;
+	public static final field GUILD_DIRECT Lnet/mamoe/mirai/message/data/MessageSourceKind;
 	public static final field STRANGER Lnet/mamoe/mirai/message/data/MessageSourceKind;
 	public static final field TEMP Lnet/mamoe/mirai/message/data/MessageSourceKind;
 	public static fun valueOf (Ljava/lang/String;)Lnet/mamoe/mirai/message/data/MessageSourceKind;
@@ -4985,19 +4985,6 @@ public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming 
 	public final fun getTargetId ()J
 }
 
-public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromDirect : net/mamoe/mirai/message/data/OnlineMessageSource$Incoming {
-	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromDirect$Key;
-	public abstract fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
-	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
-	public fun getSubject ()Lnet/mamoe/mirai/contact/GuildMember;
-	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/ContactOrBot;
-	public final fun getTarget ()Lnet/mamoe/mirai/contact/GuildMember;
-	public final fun toString ()Ljava/lang/String;
-}
-
-public final class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromDirect$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
-}
-
 public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromFriend : net/mamoe/mirai/message/data/OnlineMessageSource$Incoming {
 	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromFriend$Key;
 	public abstract fun getSender ()Lnet/mamoe/mirai/contact/Friend;
@@ -5025,8 +5012,8 @@ public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$
 public final class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGroup$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
 }
 
-public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuild : net/mamoe/mirai/message/data/OnlineMessageSource$Incoming {
-	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuild$Key;
+public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuildChannel : net/mamoe/mirai/message/data/OnlineMessageSource$Incoming {
+	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuildChannel$Key;
 	public final fun getGuild ()Lnet/mamoe/mirai/contact/Guild;
 	public abstract fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
 	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
@@ -5036,7 +5023,20 @@ public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$
 	public final fun toString ()Ljava/lang/String;
 }
 
-public final class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuild$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
+public final class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuildChannel$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
+}
+
+public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuildDirect : net/mamoe/mirai/message/data/OnlineMessageSource$Incoming {
+	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuildDirect$Key;
+	public abstract fun getSender ()Lnet/mamoe/mirai/contact/GuildMember;
+	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
+	public fun getSubject ()Lnet/mamoe/mirai/contact/GuildMember;
+	public synthetic fun getTarget ()Lnet/mamoe/mirai/contact/ContactOrBot;
+	public final fun getTarget ()Lnet/mamoe/mirai/contact/GuildMember;
+	public final fun toString ()Ljava/lang/String;
+}
+
+public final class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromGuildDirect$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
 }
 
 public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Incoming$FromStranger : net/mamoe/mirai/message/data/OnlineMessageSource$Incoming {
@@ -5083,28 +5083,6 @@ public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing 
 public final class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
 }
 
-public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToChannel : net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing {
-	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToChannel$Key;
-	public final fun getSubject ()Lnet/mamoe/mirai/contact/Channel;
-	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
-	public abstract fun getTarget ()Lnet/mamoe/mirai/contact/Channel;
-	public final fun toString ()Ljava/lang/String;
-}
-
-public final class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToChannel$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
-}
-
-public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToDirect : net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing {
-	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToDirect$Key;
-	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
-	public final fun getSubject ()Lnet/mamoe/mirai/contact/GuildMember;
-	public abstract fun getTarget ()Lnet/mamoe/mirai/contact/GuildMember;
-	public final fun toString ()Ljava/lang/String;
-}
-
-public final class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToDirect$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
-}
-
 public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToFriend : net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing {
 	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToFriend$Key;
 	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
@@ -5125,6 +5103,28 @@ public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$
 }
 
 public final class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToGroup$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
+}
+
+public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToGuildChannel : net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing {
+	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToGuildChannel$Key;
+	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
+	public final fun getSubject ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public abstract fun getTarget ()Lnet/mamoe/mirai/contact/GuildChannel;
+	public final fun toString ()Ljava/lang/String;
+}
+
+public final class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToGuildChannel$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
+}
+
+public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToGuildDirect : net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing {
+	public static final field Key Lnet/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToGuildDirect$Key;
+	public synthetic fun getSubject ()Lnet/mamoe/mirai/contact/Contact;
+	public final fun getSubject ()Lnet/mamoe/mirai/contact/GuildMember;
+	public abstract fun getTarget ()Lnet/mamoe/mirai/contact/GuildMember;
+	public final fun toString ()Ljava/lang/String;
+}
+
+public final class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToGuildDirect$Key : net/mamoe/mirai/message/data/AbstractPolymorphicMessageKey {
 }
 
 public abstract class net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing$ToStranger : net/mamoe/mirai/message/data/OnlineMessageSource$Outgoing {
