@@ -311,12 +311,12 @@ public class GuildMessageEvent(
  *
  * @see MessageEvent
  */
-public class DirectMessageEvent(
+public class GuildDirectMessageEvent(
     override val guild: Guild,
     override val sender: GuildMember,
     override val time: Int,
     override val message: MessageChain,
-) : AbstractMessageEvent(), MessageEvent, DirectEvent {
+) : AbstractMessageEvent(), MessageEvent, GuildDirectEvent {
 
     override val bot: Bot
         get() = sender.bot

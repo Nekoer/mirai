@@ -61,7 +61,7 @@ public interface GuildEvent : BotEvent {
 /**
  * 有关频道私信的事件
  */
-public interface DirectEvent : BotEvent {
+public interface GuildDirectEvent : BotEvent {
     public val guild: Guild
 
     override val bot: Bot

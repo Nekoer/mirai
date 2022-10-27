@@ -12,8 +12,8 @@ package net.mamoe.mirai.internal.network.notice.priv
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.event.AbstractEvent
 import net.mamoe.mirai.event.Event
-import net.mamoe.mirai.event.events.DirectMessageEvent
-import net.mamoe.mirai.event.events.DirectMessageSyncEvent
+import net.mamoe.mirai.event.events.GuildDirectMessageEvent
+import net.mamoe.mirai.event.events.GuildDirectMessageSyncEvent
 import net.mamoe.mirai.internal.contact.GuildImpl
 import net.mamoe.mirai.internal.contact.appId
 import net.mamoe.mirai.internal.message.toMessageChainOnline
@@ -24,7 +24,7 @@ import net.mamoe.mirai.internal.network.protocol.data.proto.GuildMsg
 import net.mamoe.mirai.message.data.MessageSourceKind
 import net.mamoe.mirai.utils.MiraiLogger
 
-internal class DirectMessageProcessor(
+internal class GuildDirectMessageProcessor(
     private val logger: MiraiLogger,
 ) : SimpleNoticeProcessor<GuildMsg.MsgOnlinePush>(type()) {
 
@@ -62,23 +62,23 @@ internal class DirectMessageProcessor(
                 if (item.head?.routingHead?.directMessageFlag?.toInt() == 1) {
                     if (!isFromSelfAccount) {
                         collect(
-                            DirectMessageEvent(
+                            GuildDirectMessageEvent(
                                 guild = guild,
                                 time = item.head!!.contentHead?.time!!.toInt(),
                                 sender = sender,
-                                message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.DIRECT),
+                                message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.GUILD_DIRECT),
                             )
                         )
                     } else {
                         collect(
-                            DirectMessageSyncEvent(
+                            GuildDirectMessageSyncEvent(
                                 client = bot.otherClients.find { it.appId == item.head!!.routingHead!!.fromAppid?.toInt() }
                                     ?: return, // don't compare with dstAppId. diff.
                                 guild = guild,
                                 time = item.head!!.contentHead?.time!!.toInt(),
                                 sender = sender,
                                 senderName = sender.nameCard,
-                                message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.DIRECT),
+                                message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.GUILD_DIRECT),
                             )
                         )
                     }

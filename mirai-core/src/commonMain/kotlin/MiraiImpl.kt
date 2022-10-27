@@ -515,7 +515,7 @@ internal open class MiraiImpl : IMirai, LowLevelApiAccessor {
                         error("MessageSourceKind.GUILD Nothing to do!")
                     }
 
-                    MessageSourceKind.DIRECT -> {
+                    MessageSourceKind.GUILD_DIRECT -> {
                         error("MessageSourceKind.DIRECT Nothing to do!")
                         //TODO 频道私信撤回
                     }

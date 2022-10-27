@@ -136,7 +136,7 @@ private fun List<Guild.ChannelMsgContent>.toMessageChain(
 
     if (onlineSource != null) {
         builder.add(
-            ReceiveMessageTransformer.createGuildMessageSource(
+            ReceiveMessageTransformer.createMessageSource(
                 bot,
                 onlineSource,
                 messageSourceKind,
@@ -193,7 +193,9 @@ private fun List<MsgComm.Msg>.toMessageChain(
  * @see joinToMessageChain
  */
 internal object ReceiveMessageTransformer {
-    fun createGuildMessageSource(
+    @JvmName("createMessageSource2")
+    @CName("createMessageSource2")
+    fun createMessageSource(
         bot: Bot,
         onlineSource: Boolean,
         messageSourceKind: MessageSourceKind,
@@ -203,7 +205,7 @@ internal object ReceiveMessageTransformer {
             true -> {
                 when (messageSourceKind) {
                     MessageSourceKind.GUILD -> OnlineMessageSourceFromGuildImpl(bot, messageList)
-                    MessageSourceKind.DIRECT -> OnlineMessageSourceFromDirectImpl(bot, messageList)
+                    MessageSourceKind.GUILD_DIRECT -> OnlineMessageSourceFromDirectImpl(bot, messageList)
                     else -> {
                         OfflineGuildMessageSourceImplData(bot, messageList, messageSourceKind)
                     }

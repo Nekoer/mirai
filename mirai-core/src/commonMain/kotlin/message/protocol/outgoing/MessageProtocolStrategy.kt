@@ -26,7 +26,7 @@ import net.mamoe.mirai.internal.network.component.ComponentKey
 import net.mamoe.mirai.internal.network.components.ClockHolder.Companion.clock
 import net.mamoe.mirai.internal.network.notice.group.GroupMessageProcessor
 import net.mamoe.mirai.internal.network.notice.guild.GuildMessageProcessor
-import net.mamoe.mirai.internal.network.notice.priv.DirectMessageProcessor
+import net.mamoe.mirai.internal.network.notice.priv.GuildDirectMessageProcessor
 import net.mamoe.mirai.internal.network.notice.priv.PrivateMessageProcessor
 import net.mamoe.mirai.internal.network.protocol.packet.OutgoingPacket
 import net.mamoe.mirai.internal.network.protocol.packet.OutgoingPacketWithRespType
@@ -180,7 +180,7 @@ internal open class GroupMessageProtocolStrategy(
 
 }
 
-internal open class ChannelMessageProtocolStrategy(
+internal open class GuildChannelMessageProtocolStrategy(
     private val contact: GuildChannelImpl,
 ) : MessageProtocolStrategy<GuildChannelImpl> {
     override suspend fun createPacketsForGeneralMessage(
@@ -248,11 +248,11 @@ internal open class DirectMessageProtocolStrategy(
         originalMessage: MessageChain,
         fromAppId: Int
     ): OnlineMessageSource.Outgoing {
-        val receipt: DirectMessageProcessor.SendDirectMessageReceipt = withTimeoutOrNull(3000) {
+        val receipt: GuildDirectMessageProcessor.SendDirectMessageReceipt = withTimeoutOrNull(3000) {
             GlobalEventChannel.parentScope(this).nextEvent(EventPriority.MONITOR) {
                 it.bot === contact.bot && it.fromAppId == fromAppId
             }
-        } ?: DirectMessageProcessor.SendDirectMessageReceipt.EMPTY
+        } ?: GuildDirectMessageProcessor.SendDirectMessageReceipt.EMPTY
 
         return OnlineMessageSourceToDirectImpl(
             contact,

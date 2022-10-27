@@ -257,7 +257,7 @@ internal class OnlineMessageSourceFromGroupImpl(
 internal class OnlineMessageSourceFromGuildImpl(
     override val bot: Bot,
     msg: List<Guild.ChannelMsgContent>,
-) : OnlineMessageSource.Incoming.FromGuild(), IncomingMessageSourceInternal {
+) : OnlineMessageSource.Incoming.FromGuildChannel(), IncomingMessageSourceInternal {
     object Serializer : KSerializer<MessageSource> by MessageSourceSerializerImpl("OnlineMessageSourceFromGuildImpl")
 
     @Transient
@@ -322,7 +322,7 @@ internal class OnlineMessageSourceFromGuildImpl(
 internal class OnlineMessageSourceFromDirectImpl(
     override val bot: Bot,
     msg: List<Guild.ChannelMsgContent>,
-) : OnlineMessageSource.Incoming.FromDirect(), IncomingMessageSourceInternal {
+) : OnlineMessageSource.Incoming.FromGuildDirect(), IncomingMessageSourceInternal {
     object Serializer : KSerializer<MessageSource> by MessageSourceSerializerImpl("OnlineMessageSourceFromDirectImpl")
 
     @Transient
@@ -332,7 +332,7 @@ internal class OnlineMessageSourceFromDirectImpl(
     override val ids: IntArray get() = sequenceIds
     override val time: Int = msg.first().head?.contentHead?.time?.toInt()!!
     override var originalMessageLazy = lazy {
-        msg.toMessageChainNoSource(bot, guildIdOrZero = sender.guild.id, MessageSourceKind.DIRECT)
+        msg.toMessageChainNoSource(bot, guildIdOrZero = sender.guild.id, MessageSourceKind.GUILD_DIRECT)
     }
     override val originalMessage: MessageChain get() = originalMessageLazy.value
     override val isOriginalMessageInitialized: Boolean

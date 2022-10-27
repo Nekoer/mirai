@@ -197,7 +197,7 @@ internal open class QQAndroidBot constructor(
                 GroupOrMemberListNoticeProcessor(pipelineLogger.subLogger("GroupOrMemberListNoticeProcessor")),
                 GroupMessageProcessor(pipelineLogger.subLogger("GroupMessageProcessor")),
                 GuildMessageProcessor(pipelineLogger.subLogger("GuildMessageProcessor")),
-                DirectMessageProcessor(pipelineLogger.subLogger("DirectMessageProcessor")),
+                GuildDirectMessageProcessor(pipelineLogger.subLogger("DirectMessageProcessor")),
                 GroupNotificationProcessor(pipelineLogger.subLogger("GroupNotificationProcessor")),
                 FriendGroupNoticeProcessor(pipelineLogger.subLogger("FriendGroupNoticeProcessor")),
                 PrivateMessageProcessor(),

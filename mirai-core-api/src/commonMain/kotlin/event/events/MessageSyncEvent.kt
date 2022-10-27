@@ -292,12 +292,12 @@ public class GuildMessageSyncEvent private constructor(
 
     init {
         val source = message[MessageSource] ?: error("Cannot find MessageSource from message")
-        check(source is OnlineMessageSource.Incoming.FromGuild) { "source provided to a GuildMessageSyncEvent must be an instance of OnlineMessageSource.Incoming.FromGuild" }
+        check(source is OnlineMessageSource.Incoming.FromGuildChannel) { "source provided to a GuildMessageSyncEvent must be an instance of OnlineMessageSource.Incoming.FromGuild" }
     }
 
     override val bot: Bot get() = sender.bot
     override val subject: GuildChannel get() = channel
-    override val source: OnlineMessageSource.Incoming.FromGuild get() = message.source as OnlineMessageSource.Incoming.FromGuild
+    override val source: OnlineMessageSource.Incoming.FromGuildChannel get() = message.source as OnlineMessageSource.Incoming.FromGuildChannel
 
     public override fun toString(): String =
         "GuildMessageSyncEvent(guild=${guild.id},channel=${channel.id} senderName=$senderName, sender=${sender.id}, message=$message)"
@@ -308,7 +308,7 @@ public class GuildMessageSyncEvent private constructor(
  *
  * @see MessageSyncEvent
  */
-public class DirectMessageSyncEvent private constructor(
+public class GuildDirectMessageSyncEvent private constructor(
     private val _client: OtherClient?,
     public val guild: Guild,
     public override val message: MessageChain,
@@ -337,12 +337,12 @@ public class DirectMessageSyncEvent private constructor(
 
     init {
         val source = message[MessageSource] ?: error("Cannot find MessageSource from message")
-        check(source is OnlineMessageSource.Incoming.FromDirect) { "source provided to a DirectMessageSyncEvent must be an instance of OnlineMessageSource.Incoming.FromGuild" }
+        check(source is OnlineMessageSource.Incoming.FromGuildDirect) { "source provided to a DirectMessageSyncEvent must be an instance of OnlineMessageSource.Incoming.FromGuild" }
     }
 
     override val bot: Bot get() = sender.bot
     override val subject: GuildMember get() = sender
-    override val source: OnlineMessageSource.Incoming.FromDirect get() = message.source as OnlineMessageSource.Incoming.FromDirect
+    override val source: OnlineMessageSource.Incoming.FromGuildDirect get() = message.source as OnlineMessageSource.Incoming.FromGuildDirect
     override fun toString(): String {
         return "DirectMessageSyncEvent(guild=$guild, message=$message, sender=$sender, senderName='$senderName', time=$time)"
     }

@@ -106,7 +106,7 @@ public fun <R> EventChannel<*>.subscribeGuildMessages(
 }
 
 
-public typealias DirectMessageSubscribersBuilder = MessageSubscribersBuilder<DirectMessageEvent, Listener<DirectMessageEvent>, Unit, Unit>
+public typealias DirectMessageSubscribersBuilder = MessageSubscribersBuilder<GuildDirectMessageEvent, Listener<GuildDirectMessageEvent>, Unit, Unit>
 
 /**
  * 通过 DSL 订阅来自所有 [Bot] 的所有频道私聊会话消息事件. DSL 语法查看 [subscribeMessages].

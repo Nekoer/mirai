@@ -125,7 +125,7 @@ public data class GroupMessagePostSendEvent @MiraiInternalApi constructor(
  * 在频道消息发送后广播的事件.
  * @see MessagePostSendEvent
  */
-public data class ChannelMessagePostSendEvent @MiraiInternalApi constructor(
+public data class GuildChannelMessagePostSendEvent @MiraiInternalApi constructor(
     /** 发信目标. */
     public override val target: GuildChannel,
     /** 待发送的消息. 此为 [MessagePreSendEvent.message] 的最终值. */
@@ -146,7 +146,7 @@ public data class ChannelMessagePostSendEvent @MiraiInternalApi constructor(
  * 在频道私信消息发送后广播的事件.
  * @see MessagePostSendEvent
  */
-public data class DirectMessagePostSendEvent @MiraiInternalApi constructor(
+public data class GuildDirectMessagePostSendEvent @MiraiInternalApi constructor(
     /** 发信目标. */
     public override val target: GuildMember,
     /** 待发送的消息. 此为 [MessagePreSendEvent.message] 的最终值. */

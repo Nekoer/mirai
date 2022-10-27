@@ -267,7 +267,7 @@ internal class OnlineMessageSourceToChannelImpl(
     override val sender: Bot,
     override val target: GuildChannel,
     providedSequenceIds: IntArray? = null,
-) : OnlineMessageSource.Outgoing.ToChannel(), MessageSourceInternal, OutgoingMessageSourceInternal {
+) : OnlineMessageSource.Outgoing.ToGuildChannel(), MessageSourceInternal, OutgoingMessageSourceInternal {
     object Serializer : KSerializer<MessageSource> by MessageSourceSerializerImpl("OnlineMessageSourceToGroup")
 
     override val isOriginalMessageInitialized: Boolean
@@ -350,7 +350,7 @@ internal class OnlineMessageSourceToDirectImpl(
     override val sender: Bot,
     override val target: GuildMember,
     providedSequenceIds: IntArray? = null,
-) : OnlineMessageSource.Outgoing.ToDirect(), MessageSourceInternal, OutgoingMessageSourceInternal {
+) : OnlineMessageSource.Outgoing.ToGuildDirect(), MessageSourceInternal, OutgoingMessageSourceInternal {
     object Serializer : KSerializer<MessageSource> by MessageSourceSerializerImpl("OnlineMessageSourceToGroup")
 
     override val isOriginalMessageInitialized: Boolean

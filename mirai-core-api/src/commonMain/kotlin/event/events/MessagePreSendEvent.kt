@@ -60,7 +60,7 @@ public data class GroupMessagePreSendEvent @MiraiInternalApi constructor(
  * 在发送频道消息前广播的事件.
  * @see MessagePreSendEvent
  */
-public data class ChannelMessagePreSendEvent @MiraiInternalApi constructor(
+public data class GuildChannelMessagePreSendEvent @MiraiInternalApi constructor(
     /** 发信目标. */
     public override val target: GuildChannel,
     /** 待发送的消息. 修改后将会同时应用于发送. */
@@ -71,7 +71,7 @@ public data class ChannelMessagePreSendEvent @MiraiInternalApi constructor(
  * 在发送频道私信消息前广播的事件.
  * @see MessagePreSendEvent
  */
-public data class DirectMessagePreSendEvent @MiraiInternalApi constructor(
+public data class GuildDirectMessagePreSendEvent @MiraiInternalApi constructor(
     /** 发信目标. */
     public override val target: GuildMember,
     /** 待发送的消息. 修改后将会同时应用于发送. */

@@ -383,7 +383,7 @@ public enum class MessageSourceKind {
     /**
      * 来自频道私信的消息
      */
-    DIRECT
+    GUILD_DIRECT
 }
 
 /**

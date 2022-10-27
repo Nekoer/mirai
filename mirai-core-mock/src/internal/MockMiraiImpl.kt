@@ -280,7 +280,7 @@ internal class MockMiraiImpl : MiraiImpl() {
                     // TODO: No Event
                 }
 
-                MessageSourceKind.DIRECT -> {
+                MessageSourceKind.GUILD_DIRECT -> {
                     // TODO: No Event
                 }
             }

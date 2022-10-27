@@ -54,8 +54,8 @@ internal class GuildMemberImpl constructor(
         return sendMessageImpl(
             message,
             messageProtocolStrategy.cast(),
-            ::DirectMessagePreSendEvent,
-            ::DirectMessagePostSendEvent.cast()
+            ::GuildDirectMessagePreSendEvent,
+            ::GuildDirectMessagePostSendEvent.cast()
         )
     }
 

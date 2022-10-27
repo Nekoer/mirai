@@ -145,9 +145,9 @@ public sealed class OnlineMessageSource : MessageSource() {
         }
 
         @NotStableForInheritance
-        public abstract class ToChannel @MiraiInternalApi constructor() : Outgoing() {
+        public abstract class ToGuildChannel @MiraiInternalApi constructor() : Outgoing() {
             public companion object Key :
-                AbstractPolymorphicMessageKey<Outgoing, ToChannel>(Outgoing, { it.safeCast() })
+                AbstractPolymorphicMessageKey<Outgoing, ToGuildChannel>(Outgoing, { it.safeCast() })
 
             public abstract override val target: GuildChannel
             public final override val subject: GuildChannel get() = target
@@ -158,9 +158,9 @@ public sealed class OnlineMessageSource : MessageSource() {
         }
 
         @NotStableForInheritance
-        public abstract class ToDirect @MiraiInternalApi constructor() : Outgoing() {
+        public abstract class ToGuildDirect @MiraiInternalApi constructor() : Outgoing() {
             public companion object Key :
-                AbstractPolymorphicMessageKey<Outgoing, ToDirect>(Outgoing, { it.safeCast() })
+                AbstractPolymorphicMessageKey<Outgoing, ToGuildDirect>(Outgoing, { it.safeCast() })
 
             public abstract override val target: GuildMember
             public final override val subject: GuildMember get() = target
@@ -238,9 +238,9 @@ public sealed class OnlineMessageSource : MessageSource() {
         }
 
         @NotStableForInheritance
-        public abstract class FromGuild @MiraiInternalApi constructor() : Incoming() {
+        public abstract class FromGuildChannel @MiraiInternalApi constructor() : Incoming() {
             public companion object Key :
-                AbstractPolymorphicMessageKey<Incoming, FromGuild>(Incoming, { it.safeCast() })
+                AbstractPolymorphicMessageKey<Incoming, FromGuildChannel>(Incoming, { it.safeCast() })
 
             public abstract override val sender: GuildMember
             public override val subject: Guild get() = sender.guild
@@ -253,9 +253,9 @@ public sealed class OnlineMessageSource : MessageSource() {
         }
 
         @NotStableForInheritance
-        public abstract class FromDirect @MiraiInternalApi constructor() : Incoming() {
+        public abstract class FromGuildDirect @MiraiInternalApi constructor() : Incoming() {
             public companion object Key :
-                AbstractPolymorphicMessageKey<Incoming, FromDirect>(Incoming, { it.safeCast() })
+                AbstractPolymorphicMessageKey<Incoming, FromGuildDirect>(Incoming, { it.safeCast() })
 
             public abstract override val sender: GuildMember
             public override val subject: GuildMember get() = sender

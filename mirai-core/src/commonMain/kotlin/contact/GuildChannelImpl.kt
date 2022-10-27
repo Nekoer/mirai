@@ -20,7 +20,7 @@ import net.mamoe.mirai.internal.message.image.OfflineGuildImage
 import net.mamoe.mirai.internal.message.image.calculateImageInfo
 import net.mamoe.mirai.internal.message.image.getIdByImageType
 import net.mamoe.mirai.internal.message.image.getImageTypeById
-import net.mamoe.mirai.internal.message.protocol.outgoing.ChannelMessageProtocolStrategy
+import net.mamoe.mirai.internal.message.protocol.outgoing.GuildChannelMessageProtocolStrategy
 import net.mamoe.mirai.internal.message.protocol.outgoing.MessageProtocolStrategy
 import net.mamoe.mirai.internal.network.components.BdhSession
 import net.mamoe.mirai.internal.network.highway.Highway
@@ -57,7 +57,7 @@ internal abstract class CommonGuildChannelImpl constructor(
 ) : GuildChannel, AbstractContact(bot, parentCoroutineContext) {
 
     private val messageProtocolStrategy: MessageProtocolStrategy<GuildChannelImpl> =
-        ChannelMessageProtocolStrategy(this.cast())
+        GuildChannelMessageProtocolStrategy(this.cast())
 
 
     override val name: String = channelInfo.name
@@ -66,8 +66,8 @@ internal abstract class CommonGuildChannelImpl constructor(
         return sendMessageImpl(
             message,
             messageProtocolStrategy.cast(),
-            ::ChannelMessagePreSendEvent,
-            ::ChannelMessagePostSendEvent.cast()
+            ::GuildChannelMessagePreSendEvent,
+            ::GuildChannelMessagePostSendEvent.cast()
         )
     }
 

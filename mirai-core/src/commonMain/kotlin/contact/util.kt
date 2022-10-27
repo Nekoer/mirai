@@ -152,10 +152,10 @@ internal fun net.mamoe.mirai.event.events.MessageEvent.logMessageReceived() {
             is net.mamoe.mirai.event.events.GuildMessageSyncEvent ->
                 renderGuildMessageSync(guild, channel, sender, message)
 
-            is net.mamoe.mirai.event.events.DirectMessageEvent ->
+            is net.mamoe.mirai.event.events.GuildDirectMessageEvent ->
                 renderDirectMessage(guild, sender.nameCard, sender, message)
 
-            is net.mamoe.mirai.event.events.DirectMessageSyncEvent ->
+            is net.mamoe.mirai.event.events.GuildDirectMessageSyncEvent ->
                 renderDirectMessageSync(guild, sender, message)
 
             else -> toString()
