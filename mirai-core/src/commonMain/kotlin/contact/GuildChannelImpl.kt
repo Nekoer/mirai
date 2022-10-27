@@ -11,7 +11,7 @@ package net.mamoe.mirai.internal.contact
 
 import net.mamoe.mirai.contact.GuildChannel
 import net.mamoe.mirai.contact.file.RemoteFiles
-import net.mamoe.mirai.data.ChannelInfo
+import net.mamoe.mirai.data.GuildChannelInfo
 import net.mamoe.mirai.event.broadcast
 import net.mamoe.mirai.event.events.*
 import net.mamoe.mirai.internal.QQAndroidBot
@@ -42,7 +42,7 @@ internal expect class GuildChannelImpl constructor(
     parentCoroutineContext: CoroutineContext,
     id: Long,
     guildId: Long,
-    channelInfo: ChannelInfo,
+    channelInfo: GuildChannelInfo,
 ) : GuildChannel, CommonGuildChannelImpl {
     companion object
 }
@@ -53,7 +53,7 @@ internal abstract class CommonGuildChannelImpl constructor(
     bot: QQAndroidBot,
     parentCoroutineContext: CoroutineContext,
     override val id: Long,
-    channelInfo: ChannelInfo,
+    channelInfo: GuildChannelInfo,
 ) : GuildChannel, AbstractContact(bot, parentCoroutineContext) {
 
     private val messageProtocolStrategy: MessageProtocolStrategy<GuildChannelImpl> =

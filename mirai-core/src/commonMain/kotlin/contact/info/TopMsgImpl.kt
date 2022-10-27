@@ -10,7 +10,7 @@
 package net.mamoe.mirai.internal.contact.info
 
 import kotlinx.serialization.Serializable
-import net.mamoe.mirai.data.ChannelInfo
+import net.mamoe.mirai.data.GuildChannelInfo
 import net.mamoe.mirai.internal.network.Packet
 
 @Serializable
@@ -18,6 +18,6 @@ internal data class TopMsgImpl(
     override val topMsgSeq: Long,
     override val topMsgTime: Long,
     override val topMsgOperatorTinyId: Long
-) : ChannelInfo.TopMsg, Packet, Packet.NoLog {
+) : GuildChannelInfo.TopMsg, Packet, Packet.NoLog {
 
 }

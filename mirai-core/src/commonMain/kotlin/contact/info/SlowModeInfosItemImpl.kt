@@ -10,7 +10,7 @@
 package net.mamoe.mirai.internal.contact.info
 
 import kotlinx.serialization.Serializable
-import net.mamoe.mirai.data.ChannelInfo
+import net.mamoe.mirai.data.GuildChannelInfo
 import net.mamoe.mirai.internal.network.Packet
 
 @Serializable
@@ -19,6 +19,6 @@ internal data class SlowModeInfosItemImpl(
     override val speakFrequency: Long,
     override val slowModeCircle: Long,
     override val slowModeText: String
-) : ChannelInfo.SlowModeInfosItem, Packet, Packet.NoLog {
+) : GuildChannelInfo.SlowModeInfosItem, Packet, Packet.NoLog {
 
 }

@@ -10,11 +10,11 @@
 package net.mamoe.mirai.internal.contact.info
 
 import kotlinx.serialization.Serializable
-import net.mamoe.mirai.data.ChannelInfo
+import net.mamoe.mirai.data.GuildChannelInfo
 import net.mamoe.mirai.internal.network.Packet
 
 @Serializable
-internal data class ChannelInfoImpl(
+internal data class GuildChannelInfoImpl(
     override val name: String,
     override val id: Long,
     override val createTime: Long,
@@ -23,8 +23,8 @@ internal data class ChannelInfoImpl(
     override val talkPermission: Short,
     override val finalNotifyType: Short,
     override val creatorTinyId: Long,
-    override val topMsg: ChannelInfo.TopMsg,
-    override val slowModeInfos: List<ChannelInfo.SlowModeInfosItem>
-) : ChannelInfo, Packet, Packet.NoLog {
+    override val topMsg: GuildChannelInfo.TopMsg,
+    override val slowModeInfos: List<GuildChannelInfo.SlowModeInfosItem>
+) : GuildChannelInfo, Packet, Packet.NoLog {
 
 }

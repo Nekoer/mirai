@@ -10,7 +10,7 @@
 package net.mamoe.mirai.internal.contact
 
 import net.mamoe.mirai.contact.GuildChannel
-import net.mamoe.mirai.data.ChannelInfo
+import net.mamoe.mirai.data.GuildChannelInfo
 import net.mamoe.mirai.internal.QQAndroidBot
 import net.mamoe.mirai.utils.RemoteFile
 import kotlin.coroutines.CoroutineContext
@@ -20,7 +20,7 @@ internal actual class GuildChannelImpl actual constructor(
     parentCoroutineContext: CoroutineContext,
     id: Long,
     override val guildId: Long,
-    channelInfo: ChannelInfo,
+    channelInfo: GuildChannelInfo,
 ) : GuildChannel, CommonGuildChannelImpl(bot, parentCoroutineContext, id, channelInfo) {
     actual companion object;
 

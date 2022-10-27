@@ -74,7 +74,7 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                     channelList.add(
                                         GuildChannelImpl(
                                             bot = bot,
-                                            channelInfo = ChannelInfoImpl(
+                                            channelInfo = GuildChannelInfoImpl(
                                                 id = it.channelId,
                                                 name = it.channelName,
                                                 createTime = it.createTime,
@@ -153,7 +153,7 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                     id = guildNode.guildId,
                                     guildCode = guildNode.guildCode,
                                     createTime = guildMeta.origin.rsp.rsp.meta.createTime,
-                                    ownerId = guildMeta.origin.rsp.rsp.meta.ownerId,
+                                    ownerTinyId = guildMeta.origin.rsp.rsp.meta.ownerId,
                                     memberCount = guildMeta.origin.rsp.rsp.meta.memberCount,
                                     maxAdminCount = guildMeta.origin.rsp.rsp.meta.adminMaxNum,
                                     maxRobotCount = guildMeta.origin.rsp.rsp.meta.robotMaxNum,
