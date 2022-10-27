@@ -56,7 +56,7 @@ public sealed interface MessageEvent : Event, Packet, BotPassiveEvent {
      *
      * - 对于私聊会话, 这个属性与 [sender] 相同;
      * - 对于群消息, 这个属性为 [Group] 的实例, 与 [GroupMessageEvent.group] 相同.
-     * - 对于频道消息, 这个属性为 [Channel] 的实例, 与 [GuildMessageEvent.channel] 相同.
+     * - 对于频道消息, 这个属性为 [GuildChannel] 的实例, 与 [GuildMessageEvent.channel] 相同.
      * - 对于频道私信消息, 这个属性为 [sender] 的实例
      *
      * 如果在 [GroupMessageEvent] 对 [sender] 发送消息, 将会通过私聊发送给群员, 而不会发送在群内.
