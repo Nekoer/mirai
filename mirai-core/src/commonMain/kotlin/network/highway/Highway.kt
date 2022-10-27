@@ -65,7 +65,7 @@ internal object Highway {
         },
         callback: ProgressionCallback? = null,
         dataFlag: Int = 4096,
-        localeId: Int = 2052
+        localeId: Int = 2052,
     ): BdhUploadResponse {
         val bdhSession = kotlin.runCatching {
             val deferred = bot.asQQAndroidBot().components[BdhSessionSyncer].bdhSession
@@ -379,7 +379,7 @@ internal fun highwayPacketSession(
     fileMd5: ByteArray,
     sizePerPacket: Int = ByteArrayPool.BUFFER_SIZE,
     extendInfo: ByteArray? = null,
-    callback: Highway.ProgressionCallback? = null
+    callback: Highway.ProgressionCallback? = null,
 ): ChunkedFlowSession<ByteReadPacket> {
     ByteArrayPool.checkBufferSize(sizePerPacket)
     //   require(ticket.size == 128) { "bad uKey. Required size=128, got ${ticket.size}" }
