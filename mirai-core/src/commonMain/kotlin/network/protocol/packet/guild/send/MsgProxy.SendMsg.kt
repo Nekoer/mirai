@@ -40,10 +40,11 @@ import kotlin.random.Random
 internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response>("MsgProxy.SendMsg") {
     override suspend fun ByteReadPacket.decode(bot: QQAndroidBot): Response {
         val data = readProtoBuf(Oidb0xf62.RspBody.serializer())
-        if (null != data.head?.contentHead?.seq) {
-            bot.client.channelMessageSeq = data.head!!.contentHead?.seq!!
+        data.head?.contentHead?.seq?.let { seq ->
+            bot.client.channelMessageSeq = seq
         }
-        if (null != data.result && data.result?.toInt() != 0) {
+
+        if (data.result != null && data.result?.toInt() != 0) {
             return Response.Failed(
                 resultCode = data.result,
                 resultType = data.errType,
@@ -164,8 +165,7 @@ internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response
                                         isEmoji = item.isEmoji,
                                         animationExpression = if (item.isEmoji) "[动画表情]" else null,
                                         downloadIndex = Guild.DownloadIndex(item.downloadIndex)
-                                    )
-                                        .toByteArray(Guild.PbReserve.serializer())
+                                    ).toByteArray(Guild.PbReserve.serializer())
                                 )
                             )
                         )
@@ -290,8 +290,7 @@ internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response
                                         isEmoji = item.isEmoji,
                                         animationExpression = if (item.isEmoji) "[动画表情]" else null,
                                         downloadIndex = Guild.DownloadIndex(item.downloadIndex)
-                                    )
-                                        .toByteArray(Guild.PbReserve.serializer())
+                                    ).toByteArray(Guild.PbReserve.serializer())
                                 )
                             )
                         )
