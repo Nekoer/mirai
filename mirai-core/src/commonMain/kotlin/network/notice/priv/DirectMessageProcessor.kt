@@ -46,7 +46,7 @@ internal class DirectMessageProcessor(
     override suspend fun NoticePipelineContext.processImpl(data: GuildMsg.MsgOnlinePush) {
 
         for (item in data.msgs) {
-            bot.client.directSeq = item.head?.contentHead?.seq ?: (bot.client.directSeq + 1)
+            bot.client.guildDirectSeq = item.head?.contentHead?.seq ?: (bot.client.guildDirectSeq + 1)
 
             val tinyId = item.head?.routingHead?.fromTinyId
             val fromUin = item.head?.routingHead?.fromUin

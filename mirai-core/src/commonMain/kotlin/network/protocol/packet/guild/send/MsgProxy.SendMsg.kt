@@ -41,7 +41,7 @@ internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response
     override suspend fun ByteReadPacket.decode(bot: QQAndroidBot): Response {
         val data = readProtoBuf(Oidb0xf62.RspBody.serializer())
         data.head?.contentHead?.seq?.let { seq ->
-            bot.client.channelMessageSeq = seq
+            bot.client.guildChannelMessageSeq = seq
         }
 
         if (data.result != null && data.result?.toInt() != 0) {
@@ -88,7 +88,8 @@ internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response
         val random = Random.nextInt()
         val msgUid = random or (1 shl 56)
 
-        val head = Guild.ChannelContentHead(type = 3840, random = msgUid.toLong(), seq = ++client.channelMessageSeq)
+        val head =
+            Guild.ChannelContentHead(type = 3840, random = msgUid.toLong(), seq = ++client.guildChannelMessageSeq)
         val channelMsgHead = Guild.ChannelMsgHead(contentHead = head, routingHead = routingHead)
 
         val messageBody = Guild.MessageBody()
@@ -213,7 +214,7 @@ internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response
         val random = Random.nextInt()
         val msgUid = random or (1 shl 56)
 
-        val head = Guild.ChannelContentHead(type = 3840, random = msgUid.toLong(), seq = ++client.directSeq)
+        val head = Guild.ChannelContentHead(type = 3840, random = msgUid.toLong(), seq = ++client.guildDirectSeq)
         val channelMsgHead = Guild.ChannelMsgHead(contentHead = head, routingHead = routingHead)
 
         val messageBody = Guild.MessageBody()

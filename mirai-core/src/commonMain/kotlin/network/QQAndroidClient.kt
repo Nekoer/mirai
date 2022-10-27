@@ -124,9 +124,9 @@ internal open class QQAndroidClient(
 
     internal var strangerSeq: Int = 0
 
-    internal var directSeq: Long = 0L
+    internal var guildDirectSeq: Long = 0L
 
-    internal var channelMessageSeq: Long = 0L
+    internal var guildChannelMessageSeq: Long = 0L
 
     /**
      * for send
