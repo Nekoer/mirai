@@ -149,8 +149,6 @@ internal class ImageProtocol : MessageProtocol() {
                         collect(ImMsgBody.Elem(customFace = data.delegate))
                     }
                 }
-
-                else -> markNotConsumed()
             }
         }
 

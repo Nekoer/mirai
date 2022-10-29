@@ -286,7 +286,7 @@ internal class OnlineMessageSourceFromGuildImpl(
 
     override val sender: GuildMember by lazy {
         val guild = subject
-        val member = guild.members.find { it.id == msg.first().head?.routingHead?.fromTinyId } as GuildMember
+        val member = guild.members.find { it.id == msg.first().head?.routingHead?.fromTinyId } as GuildMember?
         if (member != null) {
             return@lazy member
         } else {

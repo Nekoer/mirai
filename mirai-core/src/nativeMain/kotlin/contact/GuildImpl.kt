@@ -21,7 +21,7 @@ internal actual class GuildImpl actual constructor(
     id: Long,
     guildInfo: GuildInfo,
     members: ContactList<GuildMemberImpl>,
-    channelNodes: List<ChannelImpl>
+    channelNodes: List<GuildChannelImpl>
 ) : Guild, CommonGuildImpl(bot, parentCoroutineContext, id, guildInfo, channelNodes, members) {
     actual companion object
 }
