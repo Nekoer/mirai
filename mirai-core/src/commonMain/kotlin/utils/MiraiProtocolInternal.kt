@@ -62,7 +62,7 @@ internal class MiraiProtocolInternal(
                 537064446,
                 "2.0.5",
                 "6.0.0.236",
-                184024956,
+                16252796,
                 0x10400,
                 34869472,
                 "A6 B7 45 BF 24 A2 C2 77 52 77 16 F6 F3 6E B6 8D",
