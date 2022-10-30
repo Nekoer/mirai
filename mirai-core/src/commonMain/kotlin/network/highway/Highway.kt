@@ -10,7 +10,6 @@
 package net.mamoe.mirai.internal.network.highway
 
 import io.ktor.utils.io.core.*
-import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -403,7 +402,7 @@ internal fun highwayPacketSession(
                 datalength = size,
                 dataoffset = offset,
                 filesize = data.size,
-                serviceticket = ticket.value,
+                serviceticket = initialTicket,
                 md5 = buffer.md5(0, size),
                 fileMd5 = fileMd5,
             ),
