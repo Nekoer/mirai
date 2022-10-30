@@ -11,6 +11,8 @@ package net.mamoe.mirai.internal.contact.info
 
 import kotlinx.serialization.Serializable
 import net.mamoe.mirai.data.GuildChannelInfo
+import net.mamoe.mirai.data.GuildChannelType
+import net.mamoe.mirai.data.GuildTalkPermissionType
 import net.mamoe.mirai.internal.network.Packet
 
 @Serializable
@@ -18,9 +20,9 @@ internal data class GuildChannelInfoImpl(
     override val name: String,
     override val id: Long,
     override val createTime: Long,
-    override val channelType: Short,
+    override val channelType: GuildChannelType,
 //    override val channelSubType: Int,
-    override val talkPermission: Short,
+    override val talkPermission: GuildTalkPermissionType,
     override val finalNotifyType: Short,
     override val creatorTinyId: Long,
     override val topMsg: GuildChannelInfo.TopMsg,

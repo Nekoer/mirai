@@ -15,6 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import net.mamoe.mirai.contact.ContactList
+import net.mamoe.mirai.data.GuildChannelMemberPermissions
+import net.mamoe.mirai.data.GuildChannelType
+import net.mamoe.mirai.data.GuildTalkPermissionType
 import net.mamoe.mirai.internal.QQAndroidBot
 import net.mamoe.mirai.internal.contact.GuildChannelImpl
 import net.mamoe.mirai.internal.contact.GuildImpl
@@ -71,6 +74,24 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                             )
                                         )
                                     }
+
+                                    val channelType = when (it.channelType) {
+                                        0.toShort() -> GuildChannelType.TEXT_SUB_CHANNEL
+                                        1.toShort() -> GuildChannelType.RESERVED_UNAVAILABLE_1
+                                        2.toShort() -> GuildChannelType.VOICE_SUB_CHANNEL
+                                        3.toShort() -> GuildChannelType.RESERVED_UNAVAILABLE_3
+                                        4.toShort() -> GuildChannelType.GROUP_SUB_CHANNEL
+                                        10005.toShort() -> GuildChannelType.LIVE_SUB_CHANNEL
+                                        10006.toShort() -> GuildChannelType.APPLICATION_SUB_CHANNEL
+                                        10007.toShort() -> GuildChannelType.FORUM_SUB_CHANNEL
+                                        else -> GuildChannelType.RESERVED_UNAVAILABLE_1
+                                    }
+                                    val talkPermission = when (it.talkPermission) {
+                                        0.toShort() -> GuildTalkPermissionType.INVALID_TYPE
+                                        1.toShort() -> GuildTalkPermissionType.ALL_THE_PEOPLE
+                                        2.toShort() -> GuildTalkPermissionType.GUILD_OWNER_AND_DESIGNATED_MEMBER
+                                        else -> GuildTalkPermissionType.INVALID_TYPE
+                                    }
                                     channelList.add(
                                         GuildChannelImpl(
                                             bot = bot,
@@ -78,7 +99,7 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                                 id = it.channelId,
                                                 name = it.channelName,
                                                 createTime = it.createTime,
-                                                channelType = it.channelType,
+                                                channelType = channelType,
                                                 finalNotifyType = it.finalNotifyType,
                                                 creatorTinyId = it.creatorTinyId,
                                                 topMsg = TopMsgImpl(
@@ -87,7 +108,7 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                                     topMsgTime = it.topMsg.topMsgTime
                                                 ),
                                                 slowModeInfos = slowModeInfosItemImpl,
-                                                talkPermission = it.talkPermission,
+                                                talkPermission = talkPermission,
                                                 //channelSubType = it.visibleType
                                             ),
                                             id = it.channelId,
@@ -119,6 +140,13 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                     members.origin.data.memberWithRoles.also { it ->
                                         it.forEach { guildGroupMembersInfo ->
                                             guildGroupMembersInfo.members.forEach {
+                                                val role = when (it.role) {
+                                                    (1 shl 0).toShort() -> GuildChannelMemberPermissions.VIEW
+                                                    (1 shl 1).toShort() -> GuildChannelMemberPermissions.MANAGEMENT
+                                                    (1 shl 2).toShort() -> GuildChannelMemberPermissions.SPEAK
+                                                    (1 shl 3).toShort() -> GuildChannelMemberPermissions.LIVE
+                                                    else -> GuildChannelMemberPermissions.NONE
+                                                }
                                                 memberList.delegate.add(
                                                     GuildMemberImpl(
                                                         bot,
@@ -129,7 +157,7 @@ internal object PushFirstView : IncomingPacketFactory<Packet?>(
                                                             lastSpeakTime = it.lastSpeakTime,
                                                             tinyId = it.tinyId,
                                                             nickname = it.nickname,
-                                                            role = it.role,
+                                                            role = role,
                                                             roleName = guildGroupMembersInfo.roleName
                                                         )
                                                     )

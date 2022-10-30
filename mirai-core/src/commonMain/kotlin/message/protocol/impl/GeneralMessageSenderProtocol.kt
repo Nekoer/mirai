@@ -106,9 +106,8 @@ internal class GeneralMessageSenderProtocol : MessageProtocol(PRIORITY_GENERAL_S
             val originalMessage = attributes[ORIGINAL_MESSAGE]
             val protocolStrategy = components[MessageProtocolStrategy]
             val finalMessage = currentMessageChain
-
-            try {
-                val resp = protocolStrategy.sendPacket(bot, packet) as MessageSvcPbSendMsg.Response
+            val resp = protocolStrategy.sendPacket(bot, packet)
+            if (resp is MessageSvcPbSendMsg.Response) {
                 if (resp is MessageSvcPbSendMsg.Response.MessageTooLarge) {
                     logger.info { "STEP $step: message too large." }
                     val next = step.nextStepOrNull()
@@ -154,8 +153,7 @@ internal class GeneralMessageSenderProtocol : MessageProtocol(PRIORITY_GENERAL_S
                     "Send message failed: $resp"
                 }
                 return true
-            } catch (e: Exception) {
-                val resp = protocolStrategy.sendPacket(bot, packet) as MsgProxySendMsg.Response
+            } else if (resp is MsgProxySendMsg.Response) {
                 if (resp is MsgProxySendMsg.Response.Failed) {
                     when (resp.resultCode) {
                         (-31072).toShort() -> return true // MSG_REPEATED 不知道是什么问题，可以正常发送
@@ -167,6 +165,7 @@ internal class GeneralMessageSenderProtocol : MessageProtocol(PRIORITY_GENERAL_S
                 }
                 return true
             }
+            return false
         }
 
     }

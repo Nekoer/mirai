@@ -72,7 +72,8 @@ internal abstract class CommonGuildChannelImpl constructor(
     }
 
     override suspend fun uploadImage(resource: ExternalResource): Image = resource.withAutoClose {
-        if (BeforeImageUploadEvent(this, resource).broadcast().isCancelled) {
+
+    if (BeforeImageUploadEvent(this, resource).broadcast().isCancelled) {
             throw EventCancelledException("cancelled by BeforeImageUploadEvent.ToChannel")
         }
 

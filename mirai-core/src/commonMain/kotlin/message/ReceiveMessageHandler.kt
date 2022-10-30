@@ -25,6 +25,7 @@ import net.mamoe.mirai.internal.network.protocol.data.proto.Guild
 import net.mamoe.mirai.internal.network.protocol.data.proto.ImMsgBody
 import net.mamoe.mirai.internal.network.protocol.data.proto.MsgComm
 import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.message.data.MessageSourceKind.*
 import net.mamoe.mirai.utils.toLongUnsigned
 import kotlin.jvm.JvmName
 import kotlin.native.CName
@@ -75,16 +76,16 @@ internal suspend fun MsgComm.Msg.toMessageChainOnline(
 ): MessageChain {
     fun getSourceKind(c2cCmd: Int): MessageSourceKind {
         return when (c2cCmd) {
-            11 -> MessageSourceKind.FRIEND // bot 给其他人发消息
-            4 -> MessageSourceKind.FRIEND // bot 给自己作为好友发消息 (非 other client)
-            1 -> MessageSourceKind.GROUP
+            11 -> FRIEND // bot 给其他人发消息
+            4 -> FRIEND // bot 给自己作为好友发消息 (非 other client)
+            1 -> GROUP
             else -> error("Could not get source kind from c2cCmd: $c2cCmd")
         }
     }
 
     val kind = getSourceKind(msgHead.c2cCmd)
     val groupId = when (kind) {
-        MessageSourceKind.GROUP -> msgHead.groupInfo?.groupCode ?: 0
+        GROUP -> msgHead.groupInfo?.groupCode ?: 0
         else -> 0
     }
     return listOf(this).toMessageChainOnline(bot, groupId, kind, refineContext, facade)
@@ -204,11 +205,12 @@ internal object ReceiveMessageTransformer {
         return when (onlineSource) {
             true -> {
                 when (messageSourceKind) {
-                    MessageSourceKind.GUILD -> OnlineMessageSourceFromGuildImpl(bot, messageList)
-                    MessageSourceKind.GUILD_DIRECT -> OnlineMessageSourceFromDirectImpl(bot, messageList)
-                    else -> {
-                        OfflineGuildMessageSourceImplData(bot, messageList, messageSourceKind)
-                    }
+                    GUILD -> OnlineMessageSourceFromGuildImpl(bot, messageList)
+                    GUILD_DIRECT -> OnlineMessageSourceFromDirectImpl(bot, messageList)
+                    GROUP -> throw RuntimeException("实际并没有实现功能，不该传到此处")
+                    FRIEND -> throw RuntimeException("实际并没有实现功能，不该传到此处")
+                    TEMP -> throw RuntimeException("实际并没有实现功能，不该传到此处")
+                    STRANGER -> throw RuntimeException("实际并没有实现功能，不该传到此处")
                 }
             }
 
@@ -228,13 +230,12 @@ internal object ReceiveMessageTransformer {
         return when (onlineSource) {
             true -> {
                 when (messageSourceKind) {
-                    MessageSourceKind.TEMP -> OnlineMessageSourceFromTempImpl(bot, messageList)
-                    MessageSourceKind.GROUP -> OnlineMessageSourceFromGroupImpl(bot, messageList)
-                    MessageSourceKind.FRIEND -> OnlineMessageSourceFromFriendImpl(bot, messageList)
-                    MessageSourceKind.STRANGER -> OnlineMessageSourceFromStrangerImpl(bot, messageList)
-                    else -> {
-                        OfflineMessageSourceImplData(bot, messageList, messageSourceKind)
-                    }
+                    TEMP -> OnlineMessageSourceFromTempImpl(bot, messageList)
+                    GROUP -> OnlineMessageSourceFromGroupImpl(bot, messageList)
+                    FRIEND -> OnlineMessageSourceFromFriendImpl(bot, messageList)
+                    STRANGER -> OnlineMessageSourceFromStrangerImpl(bot, messageList)
+                    GUILD -> throw RuntimeException("实际并没有实现功能，不该传到此处")
+                    GUILD_DIRECT -> throw RuntimeException("实际并没有实现功能，不该传到此处")
                 }
             }
             false -> {

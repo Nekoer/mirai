@@ -10,6 +10,7 @@
 package net.mamoe.mirai.internal.contact.info
 
 import kotlinx.serialization.Serializable
+import net.mamoe.mirai.data.GuildChannelMemberPermissions
 import net.mamoe.mirai.data.GuildMemberInfo
 import net.mamoe.mirai.internal.network.Packet
 
@@ -19,7 +20,7 @@ internal data class GuildMemberInfoImpl(
     override val title: String,
     override val nickname: String,
     override val lastSpeakTime: Long,
-    override val role: Short,
+    override val role: GuildChannelMemberPermissions,
     override val roleName: String
 ) : GuildMemberInfo, Packet, Packet.NoLog {
 

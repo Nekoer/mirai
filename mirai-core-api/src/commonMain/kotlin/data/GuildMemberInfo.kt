@@ -34,11 +34,43 @@ public interface GuildMemberInfo {
     /**
      * 权限id
      */
-    public val role: Short
+    public val role: GuildChannelMemberPermissions
 
     /**
      * 成员权限等级 例：普通成员
      */
     public val roleName: String
 
+}
+
+public enum class GuildChannelMemberPermissions(
+    private val display: Short,
+) {
+    /**
+     * 可查看子频道 支持指定成员可见类型，支持身份组可见类型
+     */
+    VIEW((1 shl 0).toShort()),
+
+    /**
+     * 可管理子频道 创建者、管理员、子频道管理员都具有此权限
+     */
+    MANAGEMENT((1 shl 1).toShort()),
+
+    /**
+     * 可发言子频道 支持指定成员发言类型，支持身份组发言类型
+     */
+    SPEAK((1 shl 2).toShort()),
+
+    /**
+     * 可直播子频道 支持指定成员发起直播，支持身份组发起直播；仅可在直播子频道中设置
+     */
+    LIVE((1 shl 3).toShort()),
+
+    /**
+     * 只存在 Mirai 内部,不是从 OICQ 获得
+     */
+    NONE((-1).toShort())
+    ;
+
+    override fun toString(): String = "GuildChannelMemberPermissions: $display"
 }

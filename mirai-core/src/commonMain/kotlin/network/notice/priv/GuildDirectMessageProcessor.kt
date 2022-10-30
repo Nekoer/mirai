@@ -61,26 +61,30 @@ internal class GuildDirectMessageProcessor(
                 val list = mutableListOf(item)
                 if (item.head?.routingHead?.directMessageFlag?.toInt() == 1) {
                     if (!isFromSelfAccount) {
-                        collect(
-                            GuildDirectMessageEvent(
-                                guild = guild,
-                                time = item.head!!.contentHead?.time!!.toInt(),
-                                sender = sender,
-                                message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.GUILD_DIRECT),
+                        item.head?.contentHead?.time?.let {
+                            collect(
+                                GuildDirectMessageEvent(
+                                    guild = guild,
+                                    time = it.toInt(),
+                                    sender = sender,
+                                    message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.GUILD_DIRECT),
+                                )
                             )
-                        )
+                        }
                     } else {
-                        collect(
-                            GuildDirectMessageSyncEvent(
-                                client = bot.otherClients.find { it.appId == item.head!!.routingHead!!.fromAppid?.toInt() }
-                                    ?: return, // don't compare with dstAppId. diff.
-                                guild = guild,
-                                time = item.head!!.contentHead?.time!!.toInt(),
-                                sender = sender,
-                                senderName = sender.nameCard,
-                                message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.GUILD_DIRECT),
+                        item.head?.contentHead?.time?.let {
+                            collect(
+                                GuildDirectMessageSyncEvent(
+                                    client = bot.otherClients.find { it.appId == item.head!!.routingHead!!.fromAppid?.toInt() }
+                                        ?: return, // don't compare with dstAppId. diff.
+                                    guild = guild,
+                                    time = it.toInt(),
+                                    sender = sender,
+                                    senderName = sender.nameCard,
+                                    message = list.toMessageChainOnline(bot, guild.id, MessageSourceKind.GUILD_DIRECT),
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }

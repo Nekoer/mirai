@@ -33,7 +33,7 @@ public interface GuildChannelInfo {
      *
      * 0 文字子频道 | 1 保留不可用 | 2 语音子频道 | 3 保留不可用 | 4 子频道分组 | 10005 直播子频道 | 10006 应用子频道 | 10007 论坛子频道
      */
-    public val channelType: Short
+    public val channelType: GuildChannelType
 
     /**
      * 只有文字子频道具有二级分类
@@ -47,7 +47,7 @@ public interface GuildChannelInfo {
      *
      * 0 无效类型 | 1 所有人 | 2 频道主 + 指定成员
      */
-    public val talkPermission: Short
+    public val talkPermission: GuildTalkPermissionType
 
     /**
      * maybe PrivateType?
@@ -61,8 +61,14 @@ public interface GuildChannelInfo {
      */
     public val creatorTinyId: Long
 
+    /**
+     * 置顶消息
+     */
     public val topMsg: TopMsg
 
+    /**
+     * 消息速率限制策略
+     */
     public val slowModeInfos: List<SlowModeInfosItem>
 
     public interface TopMsg {
@@ -80,4 +86,55 @@ public interface GuildChannelInfo {
         public val slowModeCircle: Long
         public val slowModeText: String
     }
+}
+
+/**
+ * 0 文字子频道
+ *
+ * 1 保留不可用
+ *
+ * 2 语音子频道
+ *
+ * 3 保留不可用
+ *
+ * 4 子频道分组
+ *
+ * 10005 直播子频道
+ *
+ * 10006 应用子频道
+ *
+ * 10007 论坛子频道
+ */
+public enum class GuildChannelType(
+    private val display: Short,
+) {
+    TEXT_SUB_CHANNEL(0),           //0 文字子频道
+    RESERVED_UNAVAILABLE_1(1),     //1 保留不可用
+    VOICE_SUB_CHANNEL(2),          //2 语音子频道
+    RESERVED_UNAVAILABLE_3(3),     //3 保留不可用
+    GROUP_SUB_CHANNEL(4),          //4 子频道分组
+    LIVE_SUB_CHANNEL(10005),       //10005 直播子频道
+    APPLICATION_SUB_CHANNEL(10006),//10006 应用子频道
+    FORUM_SUB_CHANNEL(10007),      //10007 论坛子频道
+    ;
+
+    override fun toString(): String = "GuildChannelType: $display"
+}
+
+/**
+ *  0 无效类型
+ *
+ *  1 所有人
+ *
+ *  2 频道主 + 指定成员
+ */
+public enum class GuildTalkPermissionType(
+    private val display: Short,
+) {
+    INVALID_TYPE(0),                      //0 无效类型
+    ALL_THE_PEOPLE(1),                    //1 所有人
+    GUILD_OWNER_AND_DESIGNATED_MEMBER(2), //2 频道主 + 指定成员
+    ;
+
+    override fun toString(): String = "GuildTalkPermissionType: $display"
 }
