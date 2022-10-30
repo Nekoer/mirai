@@ -382,7 +382,6 @@ internal fun highwayPacketSession(
 ): ChunkedFlowSession<ByteReadPacket> {
     ByteArrayPool.checkBufferSize(sizePerPacket)
     //   require(ticket.size == 128) { "bad uKey. Required size=128, got ${ticket.size}" }
-    val ticket = atomic(initialTicket)
 
     return ChunkedFlowSession(data.input(), ByteArray(sizePerPacket), callback) { buffer, size, offset ->
         val head = CSDataHighwayHead.ReqDataHighwayHead(

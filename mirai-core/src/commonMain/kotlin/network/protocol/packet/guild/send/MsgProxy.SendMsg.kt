@@ -10,8 +10,7 @@
 package net.mamoe.mirai.internal.network.protocol.packet.guild.send
 
 import io.ktor.utils.io.core.*
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.*
 import net.mamoe.mirai.contact.GuildChannel
 import net.mamoe.mirai.contact.GuildMember
 import net.mamoe.mirai.internal.QQAndroidBot
@@ -190,130 +189,138 @@ internal object MsgProxySendMsg : OutgoingPacketFactory<MsgProxySendMsg.Response
         )
     }
 
+
     suspend operator fun invoke(
         client: QQAndroidClient,
         sender: GuildMember,
         message: MessageChain
     ) = buildOutgoingUniPacket(client) {
-        val directInfo = client.bot.network.sendAndExpect(
-            OidbSvcTrpcTcp.GetDirectMemberInfo(
-                client = client,
-                tinyId = sender.id,
-                guildId = sender.guild.id
-            )
-        )
+        //TODO 测试
+        runBlocking {
+            withContext(Dispatchers.Default) {
+                val directInfo = client.bot.network.sendAndExpect(
+                    OidbSvcTrpcTcp.GetDirectMemberInfo(
+                        client = client,
+                        tinyId = sender.id,
+                        guildId = sender.guild.id
+                    )
+                )
 
+                val routingHead = Guild.ChannelRoutingHead(
+                    channelId = directInfo.directChannelId,
+                    guildId = directInfo.directGuildId,
+                    fromTinyId = client.account.tinyId,
+                    directMessageFlag = 1
+                )
 
-        val routingHead = Guild.ChannelRoutingHead(
-            channelId = directInfo.directChannelId,
-            guildId = directInfo.directGuildId,
-            fromTinyId = client.account.tinyId,
-            directMessageFlag = 1
-        )
+                val random = Random.nextInt()
+                val msgUid = random or (1 shl 56)
 
-        val random = Random.nextInt()
-        val msgUid = random or (1 shl 56)
+                val head =
+                    Guild.ChannelContentHead(type = 3840, random = msgUid.toLong(), seq = ++client.guildDirectSeq)
+                val channelMsgHead = Guild.ChannelMsgHead(contentHead = head, routingHead = routingHead)
 
-        val head = Guild.ChannelContentHead(type = 3840, random = msgUid.toLong(), seq = ++client.guildDirectSeq)
-        val channelMsgHead = Guild.ChannelMsgHead(contentHead = head, routingHead = routingHead)
+                val messageBody = Guild.MessageBody()
+                val rich = ImMsgBody.RichText()
 
-        val messageBody = Guild.MessageBody()
-        val rich = ImMsgBody.RichText()
+                for (item in message) {
+                    when (item) {
+                        is PlainText -> {
+                            rich.elems.add(ImMsgBody.Elem(text = ImMsgBody.Text(str = item.content)))
+                        }
 
-        for (item in message) {
-            when (item) {
-                is PlainText -> {
-                    rich.elems.add(ImMsgBody.Elem(text = ImMsgBody.Text(str = item.content)))
-                }
-
-                is Image -> {
-                    //TODO need fix OnlineGuildImageImpl
-                    if (item is OnlineGroupImageImpl) {
-                        rich.elems.add(
-                            ImMsgBody.Elem(
-                                customFace = ImMsgBody.CustomFace(
-                                    serverIp = item.delegate.serverIp,
-                                    serverPort = item.delegate.serverPort,
-                                    fileId = item.delegate.fileId,
-                                    filePath = item.imageId,
-                                    picMd5 = item.md5,
-                                    imageType = item.imageType.ordinal,
-                                    width = item.width,
-                                    height = item.height,
-                                    size = item.size.toInt(),
-                                    source = 200,
-                                    useful = 1,
-                                    fileType = item.imageType.ordinal,
-                                    bizType = 0,
-                                    origin = if (item.imageType == ImageType.GIF) {
-                                        0
-                                    } else {
-                                        1
-                                    },
-                                    showLen = 0,
-                                    downloadLen = 0,
-                                    thumbHeight = item.height * 10 / 3,
-                                    thumbWidth = item.width * 10 / 3,
-                                    flag = byteArrayOf(4),
-                                    pbReserve = item.delegate.pbReserve
+                        is Image -> {
+                            //TODO need fix OnlineGuildImageImpl
+                            if (item is OnlineGroupImageImpl) {
+                                rich.elems.add(
+                                    ImMsgBody.Elem(
+                                        customFace = ImMsgBody.CustomFace(
+                                            serverIp = item.delegate.serverIp,
+                                            serverPort = item.delegate.serverPort,
+                                            fileId = item.delegate.fileId,
+                                            filePath = item.imageId,
+                                            picMd5 = item.md5,
+                                            imageType = item.imageType.ordinal,
+                                            width = item.width,
+                                            height = item.height,
+                                            size = item.size.toInt(),
+                                            source = 200,
+                                            useful = 1,
+                                            fileType = item.imageType.ordinal,
+                                            bizType = 0,
+                                            origin = if (item.imageType == ImageType.GIF) {
+                                                0
+                                            } else {
+                                                1
+                                            },
+                                            showLen = 0,
+                                            downloadLen = 0,
+                                            thumbHeight = item.height * 10 / 3,
+                                            thumbWidth = item.width * 10 / 3,
+                                            flag = byteArrayOf(4),
+                                            pbReserve = item.delegate.pbReserve
+                                        )
+                                    )
                                 )
-                            )
-                        )
-                    }
-                    if (item is OfflineGuildImage) {
-                        rich.elems.add(
-                            ImMsgBody.Elem(
-                                customFace = ImMsgBody.CustomFace(
-                                    serverIp = item.serverIp,
-                                    serverPort = item.serverPort,
-                                    fileId = item.fileId ?: 0,
-                                    filePath = item.imageId,
-                                    picMd5 = item.md5,
-                                    imageType = item.imageType.ordinal,
-                                    width = item.width,
-                                    height = item.height,
-                                    size = item.size.toInt(),
-                                    source = 200,
-                                    useful = 1,
-                                    fileType = item.imageType.ordinal,
-                                    bizType = 0,
-                                    origin = if (item.imageType == ImageType.GIF) {
-                                        0
-                                    } else {
-                                        1
-                                    },
-                                    showLen = 0,
-                                    downloadLen = 0,
-                                    thumbHeight = item.height * 10 / 3,
-                                    thumbWidth = item.width * 10 / 3,
-                                    flag = byteArrayOf(4),
-                                    pbReserve = Guild.PbReserve(
-                                        isEmoji = item.isEmoji,
-                                        animationExpression = if (item.isEmoji) "[动画表情]" else null,
-                                        downloadIndex = Guild.DownloadIndex(item.downloadIndex)
-                                    ).toByteArray(Guild.PbReserve.serializer())
+                            }
+                            if (item is OfflineGuildImage) {
+                                rich.elems.add(
+                                    ImMsgBody.Elem(
+                                        customFace = ImMsgBody.CustomFace(
+                                            serverIp = item.serverIp,
+                                            serverPort = item.serverPort,
+                                            fileId = item.fileId ?: 0,
+                                            filePath = item.imageId,
+                                            picMd5 = item.md5,
+                                            imageType = item.imageType.ordinal,
+                                            width = item.width,
+                                            height = item.height,
+                                            size = item.size.toInt(),
+                                            source = 200,
+                                            useful = 1,
+                                            fileType = item.imageType.ordinal,
+                                            bizType = 0,
+                                            origin = if (item.imageType == ImageType.GIF) {
+                                                0
+                                            } else {
+                                                1
+                                            },
+                                            showLen = 0,
+                                            downloadLen = 0,
+                                            thumbHeight = item.height * 10 / 3,
+                                            thumbWidth = item.width * 10 / 3,
+                                            flag = byteArrayOf(4),
+                                            pbReserve = Guild.PbReserve(
+                                                isEmoji = item.isEmoji,
+                                                animationExpression = if (item.isEmoji) "[动画表情]" else null,
+                                                downloadIndex = Guild.DownloadIndex(item.downloadIndex)
+                                            ).toByteArray(Guild.PbReserve.serializer())
+                                        )
+                                    )
                                 )
-                            )
-                        )
+                            }
+                        }
+
+                        else -> {
+                            rich.elems.add(ImMsgBody.Elem(text = ImMsgBody.Text(str = item.content)))
+                        }
                     }
                 }
 
-                else -> {
-                    rich.elems.add(ImMsgBody.Elem(text = ImMsgBody.Text(str = item.content)))
-                }
+                messageBody.richText = rich
+
+                val msg =
+                    Guild.ChannelMsgContent(head = channelMsgHead, body = messageBody, ctrlHead = null, extInfo = null)
+
+                writeProtoBuf(
+                    Oidb0xf62.RsqBody.serializer(),
+                    Oidb0xf62.RsqBody(
+                        msg = msg
+                    )
+                )
             }
+
         }
-
-        messageBody.richText = rich
-
-        val msg = Guild.ChannelMsgContent(head = channelMsgHead, body = messageBody, ctrlHead = null, extInfo = null)
-
-        writeProtoBuf(
-            Oidb0xf62.RsqBody.serializer(),
-            Oidb0xf62.RsqBody(
-                msg = msg
-            )
-        )
     }
 }
 

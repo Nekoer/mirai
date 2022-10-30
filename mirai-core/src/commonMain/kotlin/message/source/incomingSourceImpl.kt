@@ -280,8 +280,12 @@ internal class OnlineMessageSourceFromGuildImpl(
 ) : OnlineMessageSource.Incoming.FromGuildChannel(), IncomingMessageSourceInternal {
     object Serializer : KSerializer<MessageSource> by MessageSourceSerializerImpl("OnlineMessageSourceFromGuildImpl")
 
+    private val _isRecalledOrPlanned = atomic(false)
+
     @Transient
-    override var isRecalledOrPlanned: AtomicBoolean = atomic(false)
+    override var isRecalledOrPlanned: Boolean = _isRecalledOrPlanned.value
+    override fun setRecalled(): Boolean = _isRecalledOrPlanned.compareAndSet(expect = false, update = true)
+
     override val sequenceIds: IntArray = msg.mapToIntArray { it.head?.contentHead?.seq?.toInt()!! }
     override val internalIds: IntArray = msg.mapToIntArray { it.body?.richText!!.attr!!.random }
     override val ids: IntArray get() = sequenceIds
@@ -345,8 +349,12 @@ internal class OnlineMessageSourceFromDirectImpl(
 ) : OnlineMessageSource.Incoming.FromGuildDirect(), IncomingMessageSourceInternal {
     object Serializer : KSerializer<MessageSource> by MessageSourceSerializerImpl("OnlineMessageSourceFromDirectImpl")
 
+    private val _isRecalledOrPlanned = atomic(false)
+
     @Transient
-    override var isRecalledOrPlanned: AtomicBoolean = atomic(false)
+    override var isRecalledOrPlanned: Boolean = _isRecalledOrPlanned.value
+    override fun setRecalled(): Boolean = _isRecalledOrPlanned.compareAndSet(expect = false, update = true)
+
     override val sequenceIds: IntArray = msg.mapToIntArray { it.head?.contentHead?.seq?.toInt()!! }
     override val internalIds: IntArray = msg.mapToIntArray { it.body?.richText!!.attr!!.random }
     override val ids: IntArray get() = sequenceIds

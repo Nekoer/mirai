@@ -301,7 +301,14 @@ internal class OnlineMessageSourceToChannelImpl(
         get() = sequenceIds
     override val bot: Bot
         get() = sender
-    override var isRecalledOrPlanned: AtomicBoolean = atomic(false)
+
+
+    private val _isRecalledOrPlanned = atomic(false)
+
+    @Transient
+    override val isRecalledOrPlanned: Boolean = _isRecalledOrPlanned.value
+    override fun setRecalled(): Boolean = _isRecalledOrPlanned.compareAndSet(expect = false, update = true)
+
 
     /**
      * Note that in tests result of this Deferred is always `null`. See TestMessageSourceSequenceIdAwaiter.
@@ -384,7 +391,13 @@ internal class OnlineMessageSourceToDirectImpl(
         get() = sequenceIds
     override val bot: Bot
         get() = sender
-    override var isRecalledOrPlanned: AtomicBoolean = atomic(false)
+
+    private val _isRecalledOrPlanned = atomic(false)
+
+    @Transient
+    override val isRecalledOrPlanned: Boolean = _isRecalledOrPlanned.value
+    override fun setRecalled(): Boolean = _isRecalledOrPlanned.compareAndSet(expect = false, update = true)
+
 
     /**
      * Note that in tests result of this Deferred is always `null`. See TestMessageSourceSequenceIdAwaiter.
