@@ -126,9 +126,19 @@ internal class GeneralMessageSenderProtocol : MessageProtocol(PRIORITY_GENERAL_S
                             set(STEP, next)
                         },
                     )
-                    check(receipts.size == 1) { "Internal error: expected exactly one receipt collected from sub-process, but found ${receipts.size}." }
+
+                    //check(receipts.size == 1) { "Internal error: expected exactly one receipt collected from sub-process, but found ${receipts.size}." }
                     // We expect to get a Receipt from processAlso
-                    return false
+                    //return false
+
+                    // #2127
+                    46 -> throw SendMessageFailedException(
+                        contact,
+                        SendMessageFailedException.Reason.LIMITED_MESSAGING,
+                        originalMessage,
+                        tips = "问题原因可能是账号被多次举报或被服务器认为不安全. 若账号在官方客户端也无法发出消息, 可尝试用手机 QQ 登录后访问 https://accounts.qq.com/safe/message/unlock?lock_info=5_5 解冻."
+                    )
+
                 }
                 if (resp is MessageSvcPbSendMsg.Response.ServiceUnavailable) {
                     throw IllegalStateException("Send message to $contact failed, server service is unavailable.")
