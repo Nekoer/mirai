@@ -104,12 +104,11 @@ public open class SendMessageFailedException @MiraiInternalApi constructor(
         AT_ALL_LIMITED,
 
         /**
-
          * msg repeated
          */
-        MSG_REPEATED
+        MSG_REPEATED,
 
-         * 被服务器限制发送消息, 可能是由冻结引起.
+        /** 被服务器限制发送消息, 可能是由冻结引起.
          * @since 2.14
          */
         LIMITED_MESSAGING,
