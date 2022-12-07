@@ -1218,14 +1218,14 @@ public abstract interface class net/mamoe/mirai/data/GroupInfo {
 }
 
 public abstract interface class net/mamoe/mirai/data/GuildChannelInfo {
-	public abstract fun getChannelType ()S
+	public abstract fun getChannelType ()Lnet/mamoe/mirai/data/GuildChannelType;
 	public abstract fun getCreateTime ()J
 	public abstract fun getCreatorTinyId ()J
 	public abstract fun getFinalNotifyType ()S
 	public abstract fun getId ()J
 	public abstract fun getName ()Ljava/lang/String;
 	public abstract fun getSlowModeInfos ()Ljava/util/List;
-	public abstract fun getTalkPermission ()S
+	public abstract fun getTalkPermission ()Lnet/mamoe/mirai/data/GuildTalkPermissionType;
 	public abstract fun getTopMsg ()Lnet/mamoe/mirai/data/GuildChannelInfo$TopMsg;
 }
 
@@ -1240,6 +1240,31 @@ public abstract interface class net/mamoe/mirai/data/GuildChannelInfo$TopMsg {
 	public abstract fun getTopMsgOperatorTinyId ()J
 	public abstract fun getTopMsgSeq ()J
 	public abstract fun getTopMsgTime ()J
+}
+
+public final class net/mamoe/mirai/data/GuildChannelMemberPermissions : java/lang/Enum {
+	public static final field LIVE Lnet/mamoe/mirai/data/GuildChannelMemberPermissions;
+	public static final field MANAGEMENT Lnet/mamoe/mirai/data/GuildChannelMemberPermissions;
+	public static final field NONE Lnet/mamoe/mirai/data/GuildChannelMemberPermissions;
+	public static final field SPEAK Lnet/mamoe/mirai/data/GuildChannelMemberPermissions;
+	public static final field VIEW Lnet/mamoe/mirai/data/GuildChannelMemberPermissions;
+	public fun toString ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lnet/mamoe/mirai/data/GuildChannelMemberPermissions;
+	public static fun values ()[Lnet/mamoe/mirai/data/GuildChannelMemberPermissions;
+}
+
+public final class net/mamoe/mirai/data/GuildChannelType : java/lang/Enum {
+	public static final field APPLICATION_SUB_CHANNEL Lnet/mamoe/mirai/data/GuildChannelType;
+	public static final field FORUM_SUB_CHANNEL Lnet/mamoe/mirai/data/GuildChannelType;
+	public static final field GROUP_SUB_CHANNEL Lnet/mamoe/mirai/data/GuildChannelType;
+	public static final field LIVE_SUB_CHANNEL Lnet/mamoe/mirai/data/GuildChannelType;
+	public static final field RESERVED_UNAVAILABLE_1 Lnet/mamoe/mirai/data/GuildChannelType;
+	public static final field RESERVED_UNAVAILABLE_3 Lnet/mamoe/mirai/data/GuildChannelType;
+	public static final field TEXT_SUB_CHANNEL Lnet/mamoe/mirai/data/GuildChannelType;
+	public static final field VOICE_SUB_CHANNEL Lnet/mamoe/mirai/data/GuildChannelType;
+	public fun toString ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lnet/mamoe/mirai/data/GuildChannelType;
+	public static fun values ()[Lnet/mamoe/mirai/data/GuildChannelType;
 }
 
 public abstract interface class net/mamoe/mirai/data/GuildInfo {
@@ -1260,10 +1285,19 @@ public abstract interface class net/mamoe/mirai/data/GuildInfo {
 public abstract interface class net/mamoe/mirai/data/GuildMemberInfo {
 	public abstract fun getLastSpeakTime ()J
 	public abstract fun getNickname ()Ljava/lang/String;
-	public abstract fun getRole ()S
+	public abstract fun getRole ()Lnet/mamoe/mirai/data/GuildChannelMemberPermissions;
 	public abstract fun getRoleName ()Ljava/lang/String;
 	public abstract fun getTinyId ()J
 	public abstract fun getTitle ()Ljava/lang/String;
+}
+
+public final class net/mamoe/mirai/data/GuildTalkPermissionType : java/lang/Enum {
+	public static final field ALL_THE_PEOPLE Lnet/mamoe/mirai/data/GuildTalkPermissionType;
+	public static final field GUILD_OWNER_AND_DESIGNATED_MEMBER Lnet/mamoe/mirai/data/GuildTalkPermissionType;
+	public static final field INVALID_TYPE Lnet/mamoe/mirai/data/GuildTalkPermissionType;
+	public fun toString ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lnet/mamoe/mirai/data/GuildTalkPermissionType;
+	public static fun values ()[Lnet/mamoe/mirai/data/GuildTalkPermissionType;
 }
 
 public abstract interface class net/mamoe/mirai/data/MemberInfo : net/mamoe/mirai/data/UserInfo {
