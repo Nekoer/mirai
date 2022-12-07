@@ -241,6 +241,13 @@ internal class SsoProcessorImpl(
                         append(ssoContext.protocol)
                         append(" 强制要求滑块验证, 请更换协议后重试.")
                     }
+                    append(", extra={ login-solver=")
+                    bot.configuration.loginSolver.let { ls ->
+                        append(ls)
+                        append(" <")
+                        append(ls?.let { it::class })
+                        append(">")
+                    }
                     append(" 另请参阅: https://github.com/project-mirai/mirai-login-solver-selenium")
                 }
             )
@@ -291,15 +298,7 @@ internal class SsoProcessorImpl(
                             // use solver
                             val ticket = try {
                                 loginSolverNotNull().onSolveSliderCaptcha(bot, response.url)?.takeIf { it.isNotEmpty() }
-                            } catch (e: LoginFailedException) {
-                                collectThrow(e)
                             } catch (error: Throwable) {
-                                if (allowSlider) {
-                                    collectException(error)
-                                    allowSlider = false
-                                    response = WtLogin9(client, allowSlider).sendAndExpect()
-                                    continue@mainloop
-                                }
                                 collectThrow(error)
                             }
                             response = if (ticket == null) {
@@ -311,7 +310,10 @@ internal class SsoProcessorImpl(
                             // retry once
                             if (!allowSlider) collectThrow(createUnsupportedSliderCaptchaException(allowSlider))
                             allowSlider = false
-                            response = WtLogin9(client, allowSlider).sendAndExpect()
+                            // TODO Reconnect without slider request
+                            //      Need to create new connection NOT send it in current connection
+                            // response = WtLogin9(client, allowSlider).sendAndExpect()
+                            collectThrow(createUnsupportedSliderCaptchaException(false))
                         }
                     }
 
