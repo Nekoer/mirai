@@ -39,7 +39,6 @@ publishing {
         artifacts.artifact(shadowJar)
     }
 }
-configurePublishing("mirai-console-terminal")
 
 
 val copyResources by tasks.creating(Copy::class){
